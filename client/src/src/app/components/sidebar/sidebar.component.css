@@ -1,0 +1,42 @@
+#container {
+    background: #f0f0f0;
+    height: 100%;
+    box-shadow: 0 0 10px #0002;
+    padding: 8px;
+    width: 230px;
+    transition: width 100ms ease;
+    overflow: hidden;
+    user-select: none;
+}
+
+#container.collapsed {
+    width: 50px;
+    transition: width 100ms ease;
+}
+
+#title {
+    display: flex;
+    gap: 2px;
+}
+
+#menu {
+    padding: 0;
+}
+
+.item {
+    list-style: none;
+    font-size: 16px; 
+    text-wrap: nowrap;
+}
+
+.item.collapsed {
+    display: inline-block;
+}
+
+.item.selected {
+    color: #006ac7;
+}
+
+.label {
+    padding-left: 12px;
+}

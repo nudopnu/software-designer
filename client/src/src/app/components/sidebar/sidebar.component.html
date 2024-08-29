@@ -1,0 +1,24 @@
+<div id="container" [ngClass]="{collapsed}">
+    <div id="title">
+        <div class="button" (click)="collapsed = !collapsed">
+            <span nz-icon nzType="menu"></span>
+        </div>
+        @if (!collapsed) {
+        <h2>Siemens</h2>
+        }
+    </div>
+    <ul id="menu">
+        @for (item of links; track $index) {
+        <li>
+            <div class="button item" [ngClass]="{collapsed, selected: item.selected}" nz-tooltip
+                [nzTooltipTrigger]="collapsed ? 'hover': null" [nzTooltipTitle]="item.label"
+                (click)="navigate(item.link)">
+                <span nz-icon [nzType]="item.icon" nzTheme="outline"></span>
+                @if (!collapsed) {
+                <span class="label">{{item.label}}</span>
+                }
+            </div>
+        </li>
+        }
+    </ul>
+</div>
