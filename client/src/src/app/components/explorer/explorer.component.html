@@ -8,8 +8,10 @@
     } @else {
     @if (node.key.startsWith('1')) {
     <span nz-icon nzType="file-text" class="ant-tree-switcher-line-icon"></span>
-    } @else {
+    } @else if (node.key.startsWith('2')){
     <span nz-icon nzType="user" class="ant-tree-switcher-line-icon"></span>
+    } @else {
+    <span nz-icon nzType="bulb" class="ant-tree-switcher-line-icon"></span>
     }
     }
 </ng-template>

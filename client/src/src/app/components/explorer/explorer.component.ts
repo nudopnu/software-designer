@@ -25,12 +25,25 @@ export class ExplorerComponent {
       key: '01',
       expanded: true,
       selectable: false,
+      draggable: false,
       children: [
         { title: 'User 0', key: '2000', isLeaf: true },
         { title: 'User 1', key: '2001', isLeaf: true },
         { title: 'User 2', key: '2002', isLeaf: true },
       ]
-    }
+    },
+    {
+      title: 'Entities',
+      key: '02',
+      expanded: true,
+      selectable: false,
+      draggable: false,
+      children: [
+        { title: 'Entity 0', key: '3000', isLeaf: true },
+        { title: 'Entity 1', key: '3001', isLeaf: true },
+        { title: 'Entity 2', key: '3002', isLeaf: true },
+      ]
+    },
   ];
   multiSelect = false;
 
