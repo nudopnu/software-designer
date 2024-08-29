@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     box-sizing: border-box;
@@ -28,4 +29,11 @@ html, body {
 
 .button:hover {
     background: #d5d5d5;
+}
+
+/* Tree fixes */
+.ant-tree-show-line,
+.ant-tree-switcher,
+.ant-tree {
+    background: unset !important;
 }

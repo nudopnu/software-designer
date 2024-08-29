@@ -1,5 +1,4 @@
 #container {
-    width: 100%;
     height: 100%;
     overflow: hidden;
     position: absolute;
@@ -17,7 +16,7 @@
     position: absolute;
     width: 400%;
     height: 400%;
-    background-color: #1f1f1f;
+    background-color: #313131;
     background-image: 
         linear-gradient(0deg, #eee1 2px, transparent 0px),
         linear-gradient(90deg, #eee1 2px, transparent 0px);

@@ -1,0 +1,7 @@
+:host {
+    display: flex;
+}
+
+:host>*:first-child {
+    min-width: 200px;
+}
