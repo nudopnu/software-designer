@@ -15,6 +15,7 @@ import { ZorroModule } from './modules/zorro/zorro.module';
 import { GridComponent } from './components/grid/grid.component';
 import { EditorComponent } from './routes/editor/editor.component';
 import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
+import { ExplorerComponent } from './components/explorer/explorer.component';
 
 registerLocaleData(en);
 
@@ -24,7 +25,8 @@ registerLocaleData(en);
     SidebarComponent,
     GridComponent,
     EditorComponent,
-    MarkdownEditorComponent
+    MarkdownEditorComponent,
+    ExplorerComponent
   ],
   imports: [
     BrowserModule,

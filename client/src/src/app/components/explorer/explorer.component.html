@@ -1,0 +1,15 @@
+<nz-tree [nzData]="nodes" nzDraggable nzBlockNode nzShowLine [nzMultiple]="multiSelect" (nzClick)="nzClick($event)"
+    nzShowIcon [nzExpandedIcon]="multiExpandedIconTpl">
+</nz-tree>
+
+<ng-template #multiExpandedIconTpl let-node let-origin="origin">
+    @if (!origin.isLeaf) {
+    <span nz-icon [nzType]="node.isExpanded ? 'caret-down' : 'caret-right'" class="ant-tree-switcher-line-icon"></span>
+    } @else {
+    @if (node.key.startsWith('1')) {
+    <span nz-icon nzType="file-text" class="ant-tree-switcher-line-icon"></span>
+    } @else {
+    <span nz-icon nzType="user" class="ant-tree-switcher-line-icon"></span>
+    }
+    }
+</ng-template>
