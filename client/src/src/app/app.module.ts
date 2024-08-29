@@ -14,6 +14,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ZorroModule } from './modules/zorro/zorro.module';
 import { GridComponent } from './components/grid/grid.component';
 import { EditorComponent } from './routes/editor/editor.component';
+import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
 
 registerLocaleData(en);
 
@@ -22,7 +23,8 @@ registerLocaleData(en);
     AppComponent,
     SidebarComponent,
     GridComponent,
-    EditorComponent
+    EditorComponent,
+    MarkdownEditorComponent
   ],
   imports: [
     BrowserModule,
