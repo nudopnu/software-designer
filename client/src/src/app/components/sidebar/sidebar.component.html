@@ -3,9 +3,6 @@
         <div class="button" (click)="collapsed = !collapsed">
             <span nz-icon nzType="menu"></span>
         </div>
-        @if (!collapsed) {
-        <h2>Siemens</h2>
-        }
     </div>
     <ul id="menu">
         @for (item of links; track $index) {
