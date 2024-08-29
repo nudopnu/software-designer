@@ -12,13 +12,17 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { ZorroModule } from './modules/zorro/zorro.module';
+import { GridComponent } from './components/grid/grid.component';
+import { EditorComponent } from './routes/editor/editor.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    SidebarComponent,
+    GridComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,

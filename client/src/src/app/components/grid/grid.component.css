@@ -1,0 +1,51 @@
+#container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+}
+
+#container.grab {
+    cursor: grab;
+}
+
+#container.grab:active {
+    cursor: grabbing;
+}
+
+#grid {
+    position: absolute;
+    width: 400%;
+    height: 400%;
+    background-color: #242424;
+    background-image: 
+        linear-gradient(0deg, #eee1 2px, transparent 0px),
+        linear-gradient(90deg, #eee1 2px, transparent 0px);
+    pointer-events: none;
+    transform-origin: top left;
+}
+
+#scale {
+    width: 100%;
+    height: 100%;
+}
+
+#world {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-origin: top left;
+}
+
+#origin {
+    position: absolute;
+    background: red;
+    width: 10px;
+    height: 10px;
+}
+
+#cursor {
+    position: absolute;
+    user-select: none;
+    color: #fff;
+}
