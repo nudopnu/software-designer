@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    width: 220px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    background-color: rgba(15, 15, 15, 0.55);
+    position: relative;
+    cursor: move;
+    user-select: none;
+}
+
+:host:last-child {
+    padding-bottom: 4px;
+}
+
+#title {
+    text-align: center;
+    padding: 2px;
+    color: #fff;
+    background: radial-gradient(50% 90%, rgba(63, 128, 195, 0.62) 0%, transparent 80%);
+}
+
+#glow {
+    position: absolute;
+    inset: 0;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7);
+    border-radius: inherit;
+    background: linear-gradient(rgba(255, 255, 255, 0.25) 0px, rgba(255, 255, 255, 0.21) 3px, rgba(255, 255, 255, 0.14) 6px, rgba(255, 255, 255, 0.1) 9px, rgba(255, 255, 255, 0.1) 13px, transparent 13px);
+    pointer-events: none;
+}

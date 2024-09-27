@@ -1,0 +1,9 @@
+<div #attribute id="attribute">
+    <span>
+        <swd-node-label #nameRef [(value)]="name" style="color: #fff" (escape)="focusTypeElement()"></swd-node-label>
+        <span id="delimiter" *ngIf="type.length > 0">:</span>
+    </span>
+    <span>
+        <swd-node-label #typddeRef [(value)]="type" [casing]="'ALL_CAPS'" style="color: orange" (escape)="escape.emit()"></swd-node-label>
+    </span>
+</div>

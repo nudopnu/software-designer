@@ -1,0 +1,10 @@
+:host {
+    display: block;
+    cursor: pointer;
+    position: relative;
+}
+
+input {
+    background: transparent;
+    border: none;
+}

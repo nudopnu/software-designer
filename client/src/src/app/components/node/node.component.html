@@ -1,0 +1,8 @@
+<div id="glow"></div>
+<div id="title">
+    <span style="position: relative;"><swd-node-label [value]="'Test'" [casing]="'CAP'" (escape)="focusNthAttribute()"></swd-node-label></span>
+</div>
+@for (attribute of attributes; track $index) {
+<swd-node-attribute #attributes [name]="attribute.name" [type]="attribute.type"
+    (escape)="focusNthAttribute($index + 1)"></swd-node-attribute>
+}

@@ -1,0 +1,20 @@
+#attribute {
+    user-select: all;
+    padding: 0 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+::ng-deep #name,
+::ng-deep #delimiter {
+    pointer-events: all;
+    position: relative;
+    cursor: text !important;
+    color: white;
+}
+
+::ng-deep #type {
+    padding-left: 4px;
+    color: orange;
+}

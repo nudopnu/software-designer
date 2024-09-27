@@ -1,14 +1,9 @@
 <div id="container" [ngClass]="{grab: grab}">
-    <div id="grid" [ngStyle]="{transform: gridTranform, backgroundSize: gridSize + 'px ' +gridSize + 'px'}"></div>
+    <div id="grid" [ngStyle]="{transform: gridTranform, backgroundSize: gridSize + 'px ' + gridSize + 'px'}"></div>
     <div #world id="world" [ngStyle]="{transform: worldTransform}">
         <div #cursor id="cursor" [ngStyle]="{transform: cursorTransform}">
-            {{Math.round(cursorMatrix [2])+ ', ' + Math.round(cursorMatrix [5])}}
+            {{Math.round(cursorMatrix[2]) + ', ' + Math.round(cursorMatrix[5])}}
         </div>
-        <div id="origin"></div>
-        <p style="pointer-events: none; user-select: none; color: #fff9 ;">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, officiis cupiditate laboriosam suscipit
-            adipisci consectetur commodi quibusdam doloremque eius consequatur quidem unde quasi vel? Illum consectetur
-            amet possimus unde obcaecati!
-        </p>
+        <ng-content></ng-content>
     </div>
-</div>
+</div> 

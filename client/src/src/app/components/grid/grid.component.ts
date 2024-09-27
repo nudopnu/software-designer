@@ -46,12 +46,17 @@ export class GridComponent implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  protected updateMouseCursor(mouseEvent: MouseEvent) {
+  clientToGrid(x: number, y: number) {
     const worldElement = this.worldElementRef.nativeElement as HTMLElement;
-    const deltaX = mouseEvent.clientX - worldElement.getBoundingClientRect().x;
-    const deltaY = mouseEvent.clientY - worldElement.getBoundingClientRect().y;
-    this.cursorMatrix[2] = deltaX / this.zoom;
-    this.cursorMatrix[5] = deltaY / this.zoom;
+    const deltaX = x - worldElement.getBoundingClientRect().x;
+    const deltaY = y - worldElement.getBoundingClientRect().y;
+    return { x: deltaX, y: deltaY }
+  }
+
+  protected updateMouseCursor(mouseEvent: MouseEvent) {
+    const { x, y } = this.clientToGrid(mouseEvent.clientX, mouseEvent.clientY);
+    this.cursorMatrix[2] = x / this.zoom;
+    this.cursorMatrix[5] = y / this.zoom;
     this.cursorTransform = this.toCSS(this.cursorMatrix);
   }
 
@@ -128,7 +133,6 @@ export class GridComponent implements AfterViewInit {
     this.zoom = Math.round(zoomFactor * this.zoom * 100) / 100;
     this.zoom = Math.max(this.minZoom, this.zoom);
     this.zoom = Math.min(this.maxZoom, this.zoom);
-    console.log(this.zoom, this.minZoom, this.maxZoom);
     if (this.zoom === oldZoom) { return; }
 
     const worldElement = this.worldElementRef.nativeElement as HTMLElement;
