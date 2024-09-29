@@ -1,7 +1,7 @@
 <div id="glow"></div>
 <div id="title" [ngStyle]="{background: bgColor}">
     <span style="position: relative;">
-        <swd-node-label #title [value]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"></swd-node-label>
+        <swd-node-label #title [(value)]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"></swd-node-label>
     </span>
 </div>
 <div id="attributes">

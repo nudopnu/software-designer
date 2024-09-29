@@ -6,10 +6,6 @@
     display: contents;
 }
 
-#attribute:hover {
-    font-weight: bold;
-}
-
 #icon {
     width: 12px;
     color: rgb(255, 196, 0);

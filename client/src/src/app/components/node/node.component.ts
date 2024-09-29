@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, input, Input, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, input, Input, Output, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { Entity } from '../../models/data.model';
 import { NodeAttributeComponent } from '../node-attribute/node-attribute.component';
 import { NodeLabelComponent } from '../node-label/node-label.component';
@@ -18,6 +18,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
     attributes: [],
   };
   @Input() readonly = false;
+  @Output() entityChange = new EventEmitter<Entity>();
 
   bgColor = '';
 

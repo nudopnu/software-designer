@@ -34,6 +34,13 @@
     display: grid;
     grid-template-columns: 16px auto auto;
     gap: 0 8px;
-    cursor: pointer;
     user-select: none;
+}
+
+#attributes>*:hover {
+    font-weight: bold;
+}
+
+#attributes>* {
+    cursor: pointer;
 }
