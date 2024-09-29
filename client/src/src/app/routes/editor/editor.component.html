@@ -1,6 +1,6 @@
 <swd-grid #grid>
     @for (entry of entities; track $index) {
-    <swd-node swdDraggable swdSelectable [grid]="grid" [entity]="entry[0]" [selected]="entry[1].selected"
+    <swd-node swdDraggable swdSelectable [grid]="grid" [entity]="entry[0]" [(selected)]="entry[1].selected"
         [ngStyle]="{left: entry[1].x +'px', top: entry[1].y + 'px'}"></swd-node>
     }
 </swd-grid>
