@@ -3,3 +3,7 @@
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
 }
+
+[selected=true] {
+    outline: 3px solid orange;
+}

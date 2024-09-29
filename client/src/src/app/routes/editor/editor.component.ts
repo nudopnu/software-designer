@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { Entity } from '../../models/data.model';
 import { GridComponent } from '../../components/grid/grid.component';
+import { Entity } from '../../models/data.model';
 
 @Component({
   selector: 'swd-editor',
@@ -13,9 +13,9 @@ export class EditorComponent {
 
   isPicking = false;
   pickerTransform = '';
-  selected = -1;
+  menuSelection = -1;
 
-  entities: [Entity, { x: number, y: number }][] = [
+  entities: [Entity, { x: number, y: number, selected: boolean }][] = [
     [{
       name: 'User', attributes: [
         { isKey: true, name: 'id', type: 'INT' },
@@ -25,6 +25,7 @@ export class EditorComponent {
     }, {
       x: 0,
       y: 0,
+      selected: false,
     }]
   ];
 
@@ -42,10 +43,15 @@ export class EditorComponent {
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
     if (this.isPicking) {
-      console.log(this.selected, event);
-      if (this.selected === 1) {
+      if (this.menuSelection === 1) {
         const { x, y } = this.gridComponent.clientToGrid(event.clientX, event.clientY);
-        this.entities.push([{ name: 'NewEntity', attributes: [] }, { x, y }]);
+        const entity = { name: 'NewEntity', attributes: [] };
+        const entityProperties = {
+          x: x / this.gridComponent.zoom,
+          y: y / this.gridComponent.zoom,
+          selected: true,
+        };
+        this.entities.push([entity, entityProperties]);
       }
     }
     this.isPicking = false;

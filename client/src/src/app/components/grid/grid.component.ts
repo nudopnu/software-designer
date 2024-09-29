@@ -123,7 +123,7 @@ export class GridComponent implements AfterViewInit {
   onMouseUp(event: MouseEvent) {
     if (!this.startMousePoint) { return; }
     this.grab = false;
-    this.grabbing = false;
+    this.grabbing = false;   
   }
 
   @HostListener('wheel', ['$event'])

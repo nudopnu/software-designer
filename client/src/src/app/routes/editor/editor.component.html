@@ -1,15 +1,15 @@
 <swd-grid #grid>
     @for (entry of entities; track $index) {
-    <swd-node swdDraggable [grid]="grid" [entity]="entry[0]"
+    <swd-node swdDraggable swdSelectable [grid]="grid" [entity]="entry[0]" [selected]="entry[1].selected"
         [ngStyle]="{left: entry[1].x +'px', top: entry[1].y + 'px'}"></swd-node>
     }
 </swd-grid>
 
 <div style="position: absolute;" [ngStyle]="{transform: pickerTransform}">
     @if (isPicking) {
-    <swd-picker [(selected)]="selected">
+    <swd-picker [(selected)]="menuSelection">
         <swd-node [readonly]="true" [entity]="{name: 'ViewModel', attributes: []}" [hue]="30"></swd-node>
-        <swd-node [readonly]="true" [entity]="{name: 'Table', attributes: []}" [hue]="230"></swd-node>
+        <swd-node [readonly]="true" [entity]="{name: 'Table', attributes: []}" [hue]="210"></swd-node>
     </swd-picker>
     }
 </div>

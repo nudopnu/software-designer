@@ -21,6 +21,7 @@ import { ZorroModule } from './modules/zorro/zorro.module';
 import { EditorComponent } from './routes/editor/editor.component';
 import { DraggableDirective } from './directives/draggable.directive';
 import { PickerComponent } from './components/picker/picker.component';
+import { SelectableDirective } from './directive/selectable.directive';
 
 registerLocaleData(en);
 
@@ -38,6 +39,7 @@ registerLocaleData(en);
     NodeLabelComponent,
     DraggableDirective,
     PickerComponent,
+    SelectableDirective,
   ],
   imports: [
     BrowserModule,
