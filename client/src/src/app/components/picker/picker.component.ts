@@ -17,7 +17,7 @@ export class PickerComponent implements AfterViewInit {
     const children = Array.from(hostElement.children) as HTMLElement[];
     children.forEach((child, idx) => {
       const r = 100;
-      const phi = (360 / children.length) * idx;
+      const phi = ((360 / children.length) * idx + 270) % 360;
       child.style.position = 'absolute';
       child.style.transformOrigin = 'center';
       child.style.transform = this.polarToCss(r, phi);
@@ -44,8 +44,8 @@ export class PickerComponent implements AfterViewInit {
     children.forEach((child, idx) => {
       const frac = 360 / children.length;
 
-      const start = (frac * (idx - 0.5) + 360) % 360;
-      const end = (frac * (idx + 0.5) + 360) % 360;
+      const start = (frac * (idx - 0.5) + 360 + 270) % 360;
+      const end = (frac * (idx + 0.5) + 360 + 270) % 360;
 
       if ((phi < start || phi > end) && idx !== 0 || idx === 0 && (phi < start && phi > end)) {
         child.style.fontWeight = '';

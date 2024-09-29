@@ -37,8 +37,8 @@ export class EditorComponent {
   onMouseUp(event: MouseEvent) {
     if (this.isPicking) {
       console.log(this.selected);
-      if (this.selected === 0) {
-        this.entities.push({ name: 'New', attributes: [] });
+      if (this.selected === 1) {
+        this.entities.push({ name: 'NewEntity', attributes: [] });
       }
     }
     this.isPicking = false;

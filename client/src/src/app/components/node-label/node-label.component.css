@@ -3,18 +3,18 @@
     cursor: text;
 }
 
-#input {
-    content: attr(data-text);
+/* #input {
     display: inline-flex;
     flex-direction: column;
-}
+} */
 
 #input::after {
+    display: block;
     visibility: visible;
     left: 0;
     height: 0;
     visibility: hidden;
-    content: attr(data-text);
+    content: attr(data-text) / "";
     font-weight: bold;
     user-select: none;
     overflow: hidden;
