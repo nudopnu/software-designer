@@ -40,6 +40,10 @@ export class NodeLabelComponent implements OnInit {
       this.value = "";
     }
 
+    if(event.key === 'Delete') {
+      event.stopImmediatePropagation();
+    }
+
     if (event.shiftKey || event.ctrlKey || event.altKey) { return; }
 
     if (isAscii && !isSpacebar) {
