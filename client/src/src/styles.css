@@ -1,4 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.dark.min.css';
+
+:root {
+    color-scheme: dark;
+}
+
 html,
 body {
     height: 100%;
@@ -14,16 +20,10 @@ body {
     border-radius: 5px;
 }
 
-.ant-btn.ant-btn-background-ghost {
-    color: rgba(0, 0, 0, .45);
-    border-color: rgba(0, 0, 0, .45);
-}
-
 .button {
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 12px;
-    color: rgba(0, 0, 0, .85);
     height: fit-content;
 }
 
