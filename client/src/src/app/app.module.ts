@@ -20,6 +20,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ZorroModule } from './modules/zorro/zorro.module';
 import { EditorComponent } from './routes/editor/editor.component';
 import { DraggableDirective } from './directives/draggable.directive';
+import { PickerComponent } from './components/picker/picker.component';
 
 registerLocaleData(en);
 
@@ -36,6 +37,7 @@ registerLocaleData(en);
     NodeAttributeComponent,
     NodeLabelComponent,
     DraggableDirective,
+    PickerComponent,
   ],
   imports: [
     BrowserModule,
