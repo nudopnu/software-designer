@@ -1,5 +1,6 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Entity } from '../../models/data.model';
+import { GridComponent } from '../../components/grid/grid.component';
 
 @Component({
   selector: 'swd-editor',
@@ -8,18 +9,23 @@ import { Entity } from '../../models/data.model';
 })
 export class EditorComponent {
 
+  @ViewChild('grid') gridComponent!: GridComponent;
+
   isPicking = false;
   pickerTransform = '';
   selected = -1;
 
-  entities: Entity[] = [
-    {
+  entities: [Entity, { x: number, y: number }][] = [
+    [{
       name: 'User', attributes: [
         { isKey: true, name: 'id', type: 'INT' },
         { isKey: false, name: 'firstname', type: 'VARCHAR(100)' },
         { isKey: false, name: 'lastname', type: 'VARCHAR(100)' },
       ]
-    }
+    }, {
+      x: 0,
+      y: 0,
+    }]
   ];
 
   constructor(private hostRef: ElementRef) { }
@@ -36,9 +42,10 @@ export class EditorComponent {
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
     if (this.isPicking) {
-      console.log(this.selected);
+      console.log(this.selected, event);
       if (this.selected === 1) {
-        this.entities.push({ name: 'NewEntity', attributes: [] });
+        const { x, y } = this.gridComponent.clientToGrid(event.clientX, event.clientY);
+        this.entities.push([{ name: 'NewEntity', attributes: [] }, { x, y }]);
       }
     }
     this.isPicking = false;

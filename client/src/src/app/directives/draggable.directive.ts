@@ -1,6 +1,5 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { GridComponent } from '../components/grid/grid.component';
-import { HtmlParser } from '@angular/compiler';
 
 @Directive({
   selector: '[swdDraggable]'
