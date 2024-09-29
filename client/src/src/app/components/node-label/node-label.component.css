@@ -3,11 +3,6 @@
     cursor: text;
 }
 
-/* #input {
-    display: inline-flex;
-    flex-direction: column;
-} */
-
 #input::after {
     display: block;
     visibility: visible;
