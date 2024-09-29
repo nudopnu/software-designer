@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { NodeLabelComponent } from '../node-label/node-label.component';
 import { Attribute } from '../../models/data.model';
 
@@ -15,6 +15,12 @@ export class NodeAttributeComponent {
 
   @Input() attribute!: Attribute;
   @Output() escape = new EventEmitter();
+
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (!event.altKey || event.key !== 'Enter') { return; }
+    this.attribute.isKey = !this.attribute.isKey;
+  }
 
   focusNameElement() {
     this.nameLabel.focus();

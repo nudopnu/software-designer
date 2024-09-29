@@ -46,8 +46,4 @@ export class DraggableDirective {
     hostElement.style.top = `${(y - this.startPoint.offsetY) / this.grid.zoom}px`;
   }
 
-  @HostListener('click', ['$event'])
-  onClick(event: MouseEvent) {
-    console.log(event);
-  }
 }

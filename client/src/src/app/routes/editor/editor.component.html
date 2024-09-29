@@ -1,14 +1,14 @@
 <swd-grid #grid>
-    <!-- <swd-node swdDraggable [grid]="grid"></swd-node> -->
+    @for (entity of entities; track $index) {
+    <swd-node swdDraggable [grid]="grid" [entity]="entity"></swd-node>
+    }
 </swd-grid>
+
 <div style="position: absolute;" [ngStyle]="{transform: pickerTransform}">
     @if (isPicking) {
     <swd-picker [(selected)]="selected">
-        <div>item1</div>
-        <div>item2</div>
-        <div>item3</div>
-        <div>item4</div>
-        <div>item5</div>
+        <swd-node [entity]="{name: 'Table', attributes: []}" [hue]="230"></swd-node>
+        <swd-node [entity]="{name: 'ViewModel', attributes: []}" [hue]="30"></swd-node>
     </swd-picker>
     }
 </div>

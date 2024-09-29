@@ -1,9 +1,9 @@
+:host {
+    display: contents;
+}
+
 #attribute {
-    user-select: all;
-    padding: 0 8px;
-    display: grid;
-    grid-template-columns: 16px 1fr 1fr;
-    cursor: pointer;
+    display: contents;
 }
 
 #attribute:hover {

@@ -2,3 +2,21 @@
     position: relative;
     cursor: text;
 }
+
+#input {
+    content: attr(data-text);
+    display: inline-flex;
+    flex-direction: column;
+}
+
+#input::after {
+    visibility: visible;
+    left: 0;
+    height: 0;
+    visibility: hidden;
+    content: attr(data-text);
+    font-weight: bold;
+    user-select: none;
+    overflow: hidden;
+    pointer-events: none;
+}

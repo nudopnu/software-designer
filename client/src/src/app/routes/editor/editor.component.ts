@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
+import { Entity } from '../../models/data.model';
 
 @Component({
   selector: 'swd-editor',
@@ -9,7 +10,17 @@ export class EditorComponent {
 
   isPicking = false;
   pickerTransform = '';
-  selected = -1;;
+  selected = -1;
+
+  entities: Entity[] = [
+    {
+      name: 'User', attributes: [
+        { isKey: true, name: 'id', type: 'INT' },
+        { isKey: false, name: 'firstname', type: 'VARCHAR(100)' },
+        { isKey: false, name: 'lastname', type: 'VARCHAR(100)' },
+      ]
+    }
+  ];
 
   constructor(private hostRef: ElementRef) { }
 
@@ -24,8 +35,11 @@ export class EditorComponent {
 
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
-    if(this.isPicking) {
+    if (this.isPicking) {
       console.log(this.selected);
+      if (this.selected === 0) {
+        this.entities.push({ name: 'New', attributes: [] });
+      }
     }
     this.isPicking = false;
   }

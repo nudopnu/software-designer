@@ -1,12 +1,13 @@
 :host {
     display: block;
-    width: 220px;
+    min-width: 120px;
     border: 1px solid #000;
     border-radius: 20px;
     background-color: rgba(15, 15, 15, 0.55);
-    position: relative;
+    position: absolute;
     cursor: move;
     user-select: none;
+    padding: 0 6px 6px 0;
 }
 
 :host:last-child {
@@ -17,7 +18,6 @@
     text-align: center;
     padding: 2px;
     color: #fff;
-    background: radial-gradient(50% 90%, rgba(63, 128, 195, 0.62) 0%, transparent 80%);
 }
 
 #glow {
@@ -27,4 +27,13 @@
     border-radius: inherit;
     background: linear-gradient(rgba(255, 255, 255, 0.25) 0px, rgba(255, 255, 255, 0.21) 3px, rgba(255, 255, 255, 0.14) 6px, rgba(255, 255, 255, 0.1) 9px, rgba(255, 255, 255, 0.1) 13px, transparent 13px);
     pointer-events: none;
+}
+
+#attributes {
+    padding: 0 8px;
+    display: grid;
+    grid-template-columns: 16px auto auto;
+    gap: 0 8px;
+    cursor: pointer;
+    user-select: none;
 }

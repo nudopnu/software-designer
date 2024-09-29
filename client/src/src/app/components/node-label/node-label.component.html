@@ -1,1 +1,1 @@
-<span #input contenteditable="true" spellcheck="false" (focus)="onFocus($event)" (input)="onInput($event)">{{initialValue}}</span>
+<span #input id="input" [attr.data-text]="value" contenteditable="true" spellcheck="false" (focus)="onFocus($event)" (input)="onInput($event)">{{initialValue}}</span>
