@@ -40,7 +40,8 @@ export class NodeLabelComponent implements OnInit {
       this.value = "";
     }
 
-    if (isAscii && !isSpacebar || event.shiftKey) {
+    if (event.shiftKey || event.ctrlKey) { return; }
+    if (isAscii && !isSpacebar) {
       if (this.casing === 'None') { return; }
       const isAllCaps = this.casing === 'ALL_CAPS';
       const selection = window.getSelection();
