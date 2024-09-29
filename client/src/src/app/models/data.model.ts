@@ -31,6 +31,8 @@ export type Entity = {
 };
 
 export type Attribute = {
+    isKey: boolean;
     name: string;
     type: string;
+    connectedTo?: Attribute;
 };

@@ -2,9 +2,19 @@
     user-select: all;
     padding: 0 8px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 16px 1fr 1fr;
+    cursor: pointer;
 }
 
+#attribute:hover {
+    font-weight: bold;
+}
+
+#icon {
+    width: 12px;
+    color: rgb(255, 196, 0);
+    justify-self: left;
+}
 
 ::ng-deep #name,
 ::ng-deep #delimiter {

@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NodeLabelComponent } from '../node-label/node-label.component';
+import { Attribute } from '../../models/data.model';
 
 @Component({
   selector: 'swd-node-attribute',
@@ -8,13 +9,11 @@ import { NodeLabelComponent } from '../node-label/node-label.component';
 })
 export class NodeAttributeComponent {
 
-  @ViewChild('attribute') attributeElementRef!: ElementRef;
+  @ViewChild('attributeRef') attributeElementRef!: ElementRef;
   @ViewChild('typddeRef') typeLabel!: NodeLabelComponent;
   @ViewChild('nameRef') nameLabel!: NodeLabelComponent;
 
-  @Input() name: string = "Name";
-  @Input() type: string = "";
-
+  @Input() attribute!: Attribute;
   @Output() escape = new EventEmitter();
 
   focusNameElement() {

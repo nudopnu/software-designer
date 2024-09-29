@@ -3,6 +3,6 @@
     <span style="position: relative;"><swd-node-label [value]="'Test'" [casing]="'CAP'" (escape)="focusNthAttribute()"></swd-node-label></span>
 </div>
 @for (attribute of attributes; track $index) {
-<swd-node-attribute #attributes [name]="attribute.name" [type]="attribute.type"
+<swd-node-attribute #attributes [attribute]="attribute"
     (escape)="focusNthAttribute($index + 1)"></swd-node-attribute>
 }
