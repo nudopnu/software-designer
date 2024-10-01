@@ -1,5 +1,12 @@
 :host {
     position: relative;
+}
+
+#container {
+    display: block;
+}
+
+#input {
     cursor: text;
 }
 

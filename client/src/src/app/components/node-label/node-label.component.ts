@@ -7,6 +7,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 })
 export class NodeLabelComponent implements OnInit {
 
+  @Input() minWidth: number = 100;
   @Input() value = '';
   @Input() requestNextCodes = ['Space', 'Tab', 'Enter'];
   @Input() casing: 'None' | 'ALL_CAPS' | 'CAP' = 'None';
@@ -40,7 +41,7 @@ export class NodeLabelComponent implements OnInit {
       this.value = "";
     }
 
-    if(event.key === 'Delete') {
+    if (event.key === 'Delete') {
       event.stopImmediatePropagation();
     }
 

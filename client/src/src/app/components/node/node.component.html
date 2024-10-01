@@ -1,12 +1,15 @@
 <div id="glow"></div>
 <div id="title" [ngStyle]="{background: bgColor}">
     <span style="position: relative;">
-        <swd-node-label #title [(value)]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"></swd-node-label>
+        <swd-node-label #title [(value)]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"
+            [minWidth]="0"></swd-node-label>
     </span>
 </div>
-<div id="attributes">
-    @for (attribute of entity.attributes; track $index) {
-    <swd-node-attribute #attributes [attribute]="attribute"
-        (escape)="focusNthAttribute($index + 1)"></swd-node-attribute>
-    }
+<div id="attributes" (mousedown)="onMouseDownOnAttribute($event)">
+    <swd-sortable [items]="entity.attributes" [templateRef]="attributeTemplate"></swd-sortable>
 </div>
+
+<ng-template #attributeTemplate let-attribute="item" let-index="index">
+    <swd-node-attribute #attributes [attribute]="attribute" (escape)="focusNthAttribute(index + 1)">
+    </swd-node-attribute>
+</ng-template>

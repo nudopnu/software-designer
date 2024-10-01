@@ -1,12 +1,15 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { GridComponent } from '../components/grid/grid.component';
 
-@Directive({
-  selector: '[swdDraggable]'
+@Component({
+  selector: 'swd-placeable',
+  templateUrl: './placeable.component.html',
+  styleUrl: './placeable.component.css'
 })
-export class DraggableDirective {
+export class PlaceableComponent {
 
   @Input() grid!: GridComponent;
+  @ViewChild('container') containerElementRef!: ElementRef;
 
   startPoint?: {
     x: number;
@@ -15,21 +18,15 @@ export class DraggableDirective {
     offsetY: number;
   };
 
-  constructor(private hostRef: ElementRef) {
-    console.log(hostRef.nativeElement);
-    (hostRef.nativeElement as HTMLElement).draggable = true;
-  }
-
-  @HostListener('dragstart', ['$event'])
   onDragStart(event: DragEvent) {
     const { x, y } = this.grid.clientToGrid(event.clientX, event.clientY);
-    const hostElementRect = (this.hostRef.nativeElement as HTMLElement).getBoundingClientRect();
+    const hostElementRect = (this.containerElementRef.nativeElement as HTMLElement).getBoundingClientRect();
     const offsetX = x - this.grid.clientToGrid(hostElementRect.x, hostElementRect.y).x;
     const offsetY = y - this.grid.clientToGrid(hostElementRect.x, hostElementRect.y).y;
     this.startPoint = { x, y, offsetX, offsetY };
-    console.log(event.target);
-    
     event.preventDefault();
+    console.log(event);
+    
   }
 
   @HostListener('document:mouseup', ['$event'])
@@ -41,10 +38,10 @@ export class DraggableDirective {
   @HostListener('document:mousemove', ['$event'])
   onDrag(event: MouseEvent) {
     if (!this.startPoint) { return; }
-    const hostElement = this.hostRef.nativeElement as HTMLElement;
+    const hostElement = this.containerElementRef.nativeElement as HTMLElement;
     const { x, y } = this.grid.clientToGrid(event.clientX, event.clientY);
     hostElement.style.left = `${(x - this.startPoint.offsetX) / this.grid.zoom}px`;
     hostElement.style.top = `${(y - this.startPoint.offsetY) / this.grid.zoom}px`;
   }
-
+  
 }

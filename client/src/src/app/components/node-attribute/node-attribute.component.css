@@ -1,26 +1,15 @@
-:host {
-    display: contents;
+#attribute {
+    display: flex;
+    border-radius: 8px;
 }
 
-#attribute {
-    display: contents;
+#attribute:hover {
+    background-color: #fff1;
 }
 
 #icon {
     width: 12px;
     color: rgb(255, 196, 0);
     justify-self: left;
-}
-
-::ng-deep #name,
-::ng-deep #delimiter {
-    pointer-events: all;
-    position: relative;
-    cursor: text !important;
-    color: white;
-}
-
-::ng-deep #type {
-    padding-left: 4px;
-    color: orange;
+    margin: 0 4px;
 }

@@ -13,6 +13,7 @@ export class NodeAttributeComponent {
   @ViewChild('typddeRef') typeLabel!: NodeLabelComponent;
   @ViewChild('nameRef') nameLabel!: NodeLabelComponent;
 
+  @Input() minWidth: number = 100;
   @Input() attribute!: Attribute;
   @Output() escape = new EventEmitter();
 

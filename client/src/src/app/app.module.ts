@@ -23,6 +23,8 @@ import { DraggableDirective } from './directives/draggable.directive';
 import { PickerComponent } from './components/picker/picker.component';
 import { SelectableDirective } from './directive/selectable.directive';
 import { NodeConnectionComponent } from './components/node-connection/node-connection.component';
+import { SortableComponent } from './components/sortable/sortable.component';
+import { PlaceableComponent } from './placeable/placeable.component';
 
 registerLocaleData(en);
 
@@ -42,6 +44,8 @@ registerLocaleData(en);
     PickerComponent,
     SelectableDirective,
     NodeConnectionComponent,
+    SortableComponent,
+    PlaceableComponent,
   ],
   imports: [
     BrowserModule,

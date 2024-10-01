@@ -21,6 +21,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   @Output() entityChange = new EventEmitter<Entity>();
 
   bgColor = '';
+  isEditing = false;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -31,6 +32,11 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
 
   ngAfterContentInit(): void {
     this.bgColor = `radial-gradient(50% 90%, hsla(${this.hue}, 52%, 51%, 0.62) 0%, transparent 80%)`
+  }
+
+  onMouseDownOnAttribute(event: MouseEvent) {
+    console.log(event);
+    this.isEditing = true;
   }
 
   focusNthAttribute(n = 0) {

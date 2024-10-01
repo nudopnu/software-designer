@@ -7,11 +7,7 @@
     position: absolute;
     cursor: move;
     user-select: none;
-    padding: 0 6px 6px 0;
-}
-
-:host:last-child {
-    padding-bottom: 4px;
+    padding: 6px;
 }
 
 #title {
@@ -27,20 +23,4 @@
     border-radius: inherit;
     background: linear-gradient(rgba(255, 255, 255, 0.25) 0px, rgba(255, 255, 255, 0.21) 3px, rgba(255, 255, 255, 0.14) 6px, rgba(255, 255, 255, 0.1) 9px, rgba(255, 255, 255, 0.1) 13px, transparent 13px);
     pointer-events: none;
-}
-
-#attributes {
-    padding: 0 8px;
-    display: grid;
-    grid-template-columns: 16px auto auto;
-    gap: 0 8px;
-    user-select: none;
-}
-
-#attributes>*:hover {
-    font-weight: bold;
-}
-
-#attributes>* {
-    cursor: pointer;
 }

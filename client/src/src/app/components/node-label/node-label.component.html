@@ -1,1 +1,6 @@
-<span #input id="input" [attr.data-text]="value" contenteditable="true" spellcheck="false" (focus)="onFocus($event)" (input)="onInput($event)">{{initialValue}}</span>
+<span id="container" [ngStyle]="{minWidth: minWidth + 'px'}">
+    <span #input id="input" [attr.data-text]="value" contenteditable="true" spellcheck="false" (focus)="onFocus($event)"
+        (input)="onInput($event)">
+        {{initialValue}}
+    </span>
+</span>
