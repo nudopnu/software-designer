@@ -26,6 +26,17 @@ export class EditorComponent {
       x: 0,
       y: 0,
       selected: true,
+    }],
+    [{
+      name: 'Account', attributes: [
+        { isKey: true, name: 'id', type: 'INT' },
+        { isKey: false, name: 'email', type: 'VARCHAR(100)' },
+        { isKey: false, name: 'password', type: 'VARCHAR(100)' },
+      ]
+    }, {
+      x: 300,
+      y: 0,
+      selected: false,
     }]
   ];
 

@@ -22,6 +22,7 @@ import { EditorComponent } from './routes/editor/editor.component';
 import { DraggableDirective } from './directives/draggable.directive';
 import { PickerComponent } from './components/picker/picker.component';
 import { SelectableDirective } from './directive/selectable.directive';
+import { NodeConnectionComponent } from './components/node-connection/node-connection.component';
 
 registerLocaleData(en);
 
@@ -40,6 +41,7 @@ registerLocaleData(en);
     DraggableDirective,
     PickerComponent,
     SelectableDirective,
+    NodeConnectionComponent,
   ],
   imports: [
     BrowserModule,

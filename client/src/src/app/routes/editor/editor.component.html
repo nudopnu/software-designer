@@ -3,6 +3,9 @@
     <swd-node swdDraggable swdSelectable [grid]="grid" [(entity)]="entry[0]" [(selected)]="entry[1].selected"
         [ngStyle]="{left: entry[1].x +'px', top: entry[1].y + 'px'}"></swd-node>
     }
+    <svg viewBox="0 0 1000 1000" style="overflow: visible;" width="1000 ">
+        <g swd-node-connection [gridComponent]="grid"></g>
+    </svg>
 </swd-grid>
 
 <div style="position: absolute;" [ngStyle]="{transform: pickerTransform}">

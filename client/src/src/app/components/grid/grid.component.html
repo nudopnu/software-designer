@@ -1,9 +1,10 @@
 <div id="container" [ngClass]="{grab: grab}">
-    <div id="grid" [ngStyle]="{transform: gridTranform, backgroundSize: gridSize + 'px ' + gridSize + 'px'}"></div>
+    <div id="grid" [ngStyle]="{transform: gridTranform, backgroundSize: gridSize + 'px ' + gridSize + 'px'}">
+    </div>
     <div #world id="world" [ngStyle]="{transform: worldTransform}">
         <div #cursor id="cursor" [ngStyle]="{transform: cursorTransform}">
             {{Math.round(cursorMatrix[2]) + ', ' + Math.round(cursorMatrix[5])}}
         </div>
         <ng-content></ng-content>
     </div>
-</div> 
+</div>
