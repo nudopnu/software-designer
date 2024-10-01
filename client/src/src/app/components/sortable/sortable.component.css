@@ -1,0 +1,9 @@
+.before, .after {
+    height: 0px;
+    transition: height 100ms ease;
+}
+
+.expanded {
+    height: 15px;
+    transition: height 100ms ease;
+}
