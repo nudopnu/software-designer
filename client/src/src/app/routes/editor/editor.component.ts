@@ -1,6 +1,7 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, signal, ViewChild } from '@angular/core';
 import { GridComponent } from '../../components/grid/grid.component';
-import { Entity } from '../../models/data.model';
+import { NodeService } from '../../services/node-service.service';
+import { Entity, Node } from '../../models/data.model';
 
 @Component({
   selector: 'swd-editor',
@@ -12,35 +13,14 @@ export class EditorComponent {
   @ViewChild('grid') gridComponent!: GridComponent;
 
   isPicking = false;
+  isConnecting = false;
   pickerTransform = '';
   menuSelection = -1;
 
-  entities: [Entity, { x: number, y: number, selected: boolean }][] = [
-    [{
-      name: 'User', attributes: [
-        { isKey: true, name: 'id', type: 'INT' },
-        { isKey: false, name: 'firstname', type: 'VARCHAR(100)' },
-        { isKey: false, name: 'lastname', type: 'VARCHAR(100)' },
-      ]
-    }, {
-      x: 0,
-      y: 0,
-      selected: true,
-    }],
-    [{
-      name: 'Account', attributes: [
-        { isKey: true, name: 'id', type: 'INT' },
-        { isKey: false, name: 'email', type: 'VARCHAR(100)' },
-        { isKey: false, name: 'password', type: 'VARCHAR(100)' },
-      ]
-    }, {
-      x: 300,
-      y: 0,
-      selected: false,
-    }]
-  ];
-
-  constructor(private hostRef: ElementRef) { }
+  constructor(
+    private hostRef: ElementRef,
+    public nodeService: NodeService,
+  ) { }
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
@@ -57,12 +37,16 @@ export class EditorComponent {
       if (this.menuSelection === 1) {
         const { x, y } = this.gridComponent.clientToGrid(event.clientX, event.clientY);
         const entity = { name: 'NewEntity', attributes: [] };
-        const entityProperties = {
-          x: x / this.gridComponent.zoom,
-          y: y / this.gridComponent.zoom,
-          selected: true,
+        const node: Node<Entity> = {
+          data: entity,
+          metadata: signal({
+            x: x / this.gridComponent.zoom,
+            y: y / this.gridComponent.zoom,
+            selected: true,
+            hovered: false,
+          }),
         };
-        this.entities.push([entity, entityProperties]);
+        this.nodeService.nodes.update(entities => [...entities, node]);
       }
     }
     this.isPicking = false;
@@ -71,7 +55,7 @@ export class EditorComponent {
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Delete') {
-      this.entities = [...this.entities.filter(entity => !entity[1].selected)];
+      this.nodeService.nodes.update(nodes => [...nodes.filter(node => !node.metadata().selected)]);
     }
   }
 

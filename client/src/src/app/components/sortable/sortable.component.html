@@ -1,10 +1,10 @@
 @for (item of items; track item) {
 <div class="slot">
-    <div class="before" [ngClass]="{expanded: expanded[$index].before}"></div>
+    <div class="before" [ngClass]="{expanded: expanded[$index] && expanded[$index].before}"></div>
     <div draggable="true" class="draggable" (dragstart)="onDragStart($event, $index)" (dragend)="onDragEnd($event)"
         (dragover)="onDragOver($event, $index)">
         <ng-container *ngTemplateOutlet="templateRef; context: {item: item, index: $index}"></ng-container>
     </div>
-    <div class="after" [ngClass]="{expanded: expanded[$index].after}"></div>
+    <div class="after" [ngClass]="{expanded: expanded[$index] && expanded[$index].after}"></div>
 </div>
 }

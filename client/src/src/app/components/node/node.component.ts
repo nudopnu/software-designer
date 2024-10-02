@@ -1,5 +1,7 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, input, Input, Output, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Entity } from '../../models/data.model';
+import { NodeService } from '../../services/node-service.service';
+import { GridComponent } from '../grid/grid.component';
 import { NodeAttributeComponent } from '../node-attribute/node-attribute.component';
 import { NodeLabelComponent } from '../node-label/node-label.component';
 
@@ -12,6 +14,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
 
   @ViewChild('title') titleComponent!: NodeLabelComponent;
   @ViewChildren('attributes') attributeComponents!: QueryList<NodeAttributeComponent>;
+  @Input() grid!: GridComponent;
   @Input() hue = 210;
   @Input() entity: Entity = {
     name: "Entity",
@@ -22,8 +25,12 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
 
   bgColor = '';
   isEditing = false;
+  hovered = false;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private nodeService: NodeService,
+  ) { }
 
   ngAfterViewInit(): void {
     if (this.readonly) { return; }
@@ -42,11 +49,31 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   focusNthAttribute(n = 0) {
     let nthComponent = this.attributeComponents.get(n);
     if (n >= this.entity.attributes.length) {
-      this.entity.attributes.push({ isKey: false, name: "", type: "" });
+      this.entity.attributes.push({ keyType: 'none', name: "", type: "" });
       this.cdr.detectChanges();
       nthComponent = this.attributeComponents.get(n);
     }
     nthComponent!.focusNameElement();
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp($event: DragEvent) {
+    this.nodeService.abortConnecting();
+  }
+
+  @HostListener('mouseover', ['$event'])
+  onMouseOver(event: MouseEvent) {
+    if (!this.nodeService.isConnecting || !this.nodeService.connectionStart) { return; }
+    console.log(this.nodeService.connectionStart.entity, this.entity);
+    this.nodeService.setDestination(this.entity);
+    this.hovered = true;
+    event.stopPropagation();
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  onMouseLeave(event: MouseEvent) {
+    this.hovered = false;
+    this.nodeService.setDestination(undefined);
   }
 
 }

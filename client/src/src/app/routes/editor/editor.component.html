@@ -1,12 +1,17 @@
 <swd-grid #grid>
-    @for (entry of entities; track $index) {
-    <swd-placeable [grid]="grid">
-        <swd-node #nodeRef swdSelectable [(entity)]="entry[0]" [(selected)]="entry[1].selected"
-            [ngStyle]="{left: entry[1].x +'px', top: entry[1].y + 'px'}"></swd-node>
+    @for (node of this.nodeService.nodes(); track $index) {
+    <swd-placeable [grid]="grid" [node]="node">
+        <swd-node #nodeRef swdSelectable [grid]="grid" [(entity)]="node.data"
+            [(selected)]="node.metadata().selected"></swd-node>
     </swd-placeable>
     }
-    <svg viewBox="0 0 1000 1000" style="overflow: visible;" width="1000 ">
-        <g swd-node-connection [gridComponent]="grid"></g>
+    <svg viewBox="0 0 1000 1000"
+        style="overflow: visible; position: absolute; top: 3px; left: 3px; pointer-events: none;" width="1000">
+        @for (connection of this.nodeService.connections(); track $index) {
+        <g swd-node-connection [gridComponent]="grid" [trackMouse]="false"
+            [startPoint]="{x: connection.src.node.metadata().x,y: connection.src.node.metadata().y }"
+            [endPoint]="{x: connection.dst.node.metadata().x,y: connection.dst.node.metadata().y }"></g>
+        }
     </svg>
 </swd-grid>
 

@@ -17,7 +17,6 @@ export class SortableComponent<T> implements OnChanges {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['items']) { return; }
     this.expanded = this.items.map(item => ({
       before: false,
       after: false,
@@ -36,9 +35,22 @@ export class SortableComponent<T> implements OnChanges {
   }
 
   onDragEnd(event: DragEvent) {
-    const tmp = this.items[this.draggedIdx]
-    this.items[this.draggedIdx] = this.items[this.toExchangeIdx];
-    this.items[this.toExchangeIdx] = tmp;
+    const newItems = [] as T[];
+    this.items.forEach((item, idx) => {
+      if (idx === this.draggedIdx) { return; }
+      if (idx === this.toExchangeIdx) {
+        if (this.toExchangeIdx < this.draggedIdx) {
+          newItems.push(this.items[this.draggedIdx]);
+          newItems.push(item);
+        } else {
+          newItems.push(item);
+          newItems.push(this.items[this.draggedIdx]);
+        }
+      } else {
+        newItems.push(item);
+      }
+    });
+    this.items = newItems;
     this.expanded = this.items.map(item => ({
       before: false,
       after: false,

@@ -8,8 +8,37 @@
 }
 
 #icon {
-    width: 12px;
     color: rgb(255, 196, 0);
-    justify-self: left;
-    margin: 0 4px;
+}
+
+.connector-container,#icon {
+    display: flex;
+    align-items: center;
+    margin: 0 6px;
+    width: 12px;
+}
+
+.connector {
+    position: relative;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    border-radius: 50%;
+    background: #fff2;
+    border: 1px solid #fff9;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+.connector:hover {
+    border: 2px solid #fffb;
+}
+
+.connector-inner {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    background: #fffb;
+    border-radius: 50%;
 }

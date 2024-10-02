@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostBinding, HostListener, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { GridComponent } from '../grid/grid.component';
 
 @Component({
@@ -6,18 +6,24 @@ import { GridComponent } from '../grid/grid.component';
   templateUrl: './node-connection.component.html',
   styleUrl: './node-connection.component.css'
 })
-export class NodeConnectionComponent {
+export class NodeConnectionComponent implements OnChanges {
 
   @ViewChild('startRef') startElementRef!: ElementRef;
   @Input() startPoint = { x: 0, y: 0 };  // Fixed starting point
   @Input() endPoint = { x: 0, y: 0 };  // Mouse position
   @Input() gridComponent!: GridComponent;
+  @Input() trackMouse = true;
   path = '';
 
   constructor(private hostRef: ElementRef) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updatePath();
+  }
+
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
+    if (!this.trackMouse) { return; }
     const startElement = this.startElementRef.nativeElement as HTMLElement;
     const hostOrigin = startElement.getBoundingClientRect();
     const deltaX = event.clientX - hostOrigin.x;

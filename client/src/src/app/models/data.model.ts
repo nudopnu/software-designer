@@ -1,3 +1,5 @@
+import { WritableSignal } from "@angular/core";
+
 export type DesignDocument = {
     description: string;
     userStories: UserStory[];
@@ -30,9 +32,21 @@ export type Entity = {
     attributes: Attribute[];
 };
 
+export type KeyType = 'none' | 'primary' | 'foreign';
+
 export type Attribute = {
-    isKey: boolean;
+    keyType: KeyType;
     name: string;
     type: string;
     connectedTo?: Attribute;
+};
+
+export type Node<T> = {
+    data: T;
+    metadata: WritableSignal<{
+        x: number;
+        y: number;
+        selected: boolean;
+        hovered: boolean;
+    }>;
 };

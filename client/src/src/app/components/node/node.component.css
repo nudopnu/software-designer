@@ -1,13 +1,22 @@
 :host {
     display: block;
+    position: absolute;
+    border-radius: 20px;
+}
+
+#container {
+    border-radius: inherit;
+    display: block;
     min-width: 120px;
     border: 1px solid #000;
-    border-radius: 20px;
-    background-color: rgba(15, 15, 15, 0.55);
-    position: absolute;
+    background-color: #0f0f0fac;
     cursor: move;
     user-select: none;
     padding: 6px;
+}
+
+#container.hovered {
+    outline: 3px solid #afafaf;
 }
 
 #title {

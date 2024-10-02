@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { GridComponent } from '../components/grid/grid.component';
+import { Node } from '../models/data.model';
 
 @Component({
   selector: 'swd-placeable',
@@ -9,24 +10,24 @@ import { GridComponent } from '../components/grid/grid.component';
 export class PlaceableComponent {
 
   @Input() grid!: GridComponent;
+  @Input() node!: Node<any>;
   @ViewChild('container') containerElementRef!: ElementRef;
 
   startPoint?: {
-    x: number;
-    y: number;
     offsetX: number;
     offsetY: number;
   };
 
   onDragStart(event: DragEvent) {
-    const { x, y } = this.grid.clientToGrid(event.clientX, event.clientY);
-    const hostElementRect = (this.containerElementRef.nativeElement as HTMLElement).getBoundingClientRect();
-    const offsetX = x - this.grid.clientToGrid(hostElementRect.x, hostElementRect.y).x;
-    const offsetY = y - this.grid.clientToGrid(hostElementRect.x, hostElementRect.y).y;
-    this.startPoint = { x, y, offsetX, offsetY };
+    const { x: mouseX, y: mouseY } = this.grid.clientToGrid(event.clientX, event.clientY);
+    const hostElement = this.containerElementRef.nativeElement as HTMLElement;
+    const hostElementRect = hostElement.getBoundingClientRect();
+    const hostElementCoords = this.grid.clientToGrid(hostElementRect.x, hostElementRect.y);
+    const offsetX = (mouseX - hostElementCoords.x) / this.grid.zoom;
+    const offsetY = (mouseY - hostElementCoords.y) / this.grid.zoom;
+    this.startPoint = { offsetX, offsetY };
     event.preventDefault();
-    console.log(event);
-    
+    console.log(this.startPoint, hostElement);
   }
 
   @HostListener('document:mouseup', ['$event'])
@@ -40,8 +41,11 @@ export class PlaceableComponent {
     if (!this.startPoint) { return; }
     const hostElement = this.containerElementRef.nativeElement as HTMLElement;
     const { x, y } = this.grid.clientToGrid(event.clientX, event.clientY);
-    hostElement.style.left = `${(x - this.startPoint.offsetX) / this.grid.zoom}px`;
-    hostElement.style.top = `${(y - this.startPoint.offsetY) / this.grid.zoom}px`;
+    const relX = ((x) / this.grid.zoom) - this.startPoint.offsetX;
+    const relY = ((y) / this.grid.zoom) - this.startPoint.offsetY;
+    // hostElement.style.left = `${relX}px`;
+    // hostElement.style.top = `${relY}px`;
+    this.node.metadata.update(metadata => ({ ...metadata, x: relX, y: relY }));
   }
-  
+
 }
