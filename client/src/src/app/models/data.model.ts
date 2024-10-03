@@ -39,14 +39,18 @@ export type Attribute = {
     name: string;
     type: string;
     connectedTo?: Attribute;
+    inAnchor: NodeMetadata;
+    outAnchor: NodeMetadata;
 };
+
+export type NodeMetadata = WritableSignal<{
+    x: number;
+    y: number;
+    selected?: boolean;
+    hovered?: boolean;
+}>;
 
 export type Node<T> = {
     data: T;
-    metadata: WritableSignal<{
-        x: number;
-        y: number;
-        selected: boolean;
-        hovered: boolean;
-    }>;
+    metadata: NodeMetadata;
 };

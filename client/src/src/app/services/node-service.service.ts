@@ -5,9 +5,9 @@ const MockData: Node<Entity>[] = [
   {
     data: {
       name: 'User', attributes: [
-        { keyType: 'primary', name: 'id', type: 'INT' },
-        { keyType: 'none', name: 'firstname', type: 'VARCHAR(100)' },
-        { keyType: 'none', name: 'lastname', type: 'VARCHAR(100)' },
+        { keyType: 'primary', name: 'id', type: 'INT', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
+        { keyType: 'none', name: 'firstname', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
+        { keyType: 'none', name: 'lastname', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
       ]
     },
     metadata: signal({
@@ -20,9 +20,9 @@ const MockData: Node<Entity>[] = [
   {
     data: {
       name: 'Account', attributes: [
-        { keyType: 'primary', name: 'id', type: 'INT' },
-        { keyType: 'none', name: 'email', type: 'VARCHAR(100)' },
-        { keyType: 'none', name: 'password', type: 'VARCHAR(100)' },
+        { keyType: 'primary', name: 'id', type: 'INT', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
+        { keyType: 'none', name: 'email', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
+        { keyType: 'none', name: 'password', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
       ]
     },
     metadata: signal({
@@ -79,7 +79,21 @@ export class NodeService {
     console.log(this.nodes());
   });
 
+
+  attributeAnchors = new Map<Attribute, WritableSignal<{ in: HTMLElement, out: HTMLElement }>>();
+
   constructor() { }
+
+  registerAttribute(attribute: Attribute, inAnchorElement: HTMLElement, outAnchorElement: HTMLElement) {
+    console.log("register", attribute);
+
+    const oldValue = this.attributeAnchors.get(attribute);
+    if (oldValue) {
+      oldValue.set({ in: inAnchorElement, out: outAnchorElement });
+    } else {
+      this.attributeAnchors.set(attribute, signal({ in: inAnchorElement, out: outAnchorElement }));
+    }
+  }
 
   startConnecting(source: Attribute, anchorElement: HTMLElement) {
     const entity = this.attributeToNode().get(source)!.data;
@@ -105,7 +119,9 @@ export class NodeService {
             keyType: 'foreign',
             name: this.connectionStart?.entity.name.toLowerCase() + '_id',
             connectedTo: this.connectionStart?.attribute,
-            type: '',
+            type: 'INT',
+            inAnchor: signal({ x: 0, y: 0 }),
+            outAnchor: signal({ x: 0, y: 0 }),
           };
           return node.data !== this.destination ? node : {
             ...node, data: {

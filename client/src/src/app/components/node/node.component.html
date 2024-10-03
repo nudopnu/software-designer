@@ -12,6 +12,6 @@
 </div>
 
 <ng-template #attributeTemplate let-attribute="item" let-index="index">
-    <swd-node-attribute [grid]="grid" #attributes [attribute]="attribute" (escape)="focusNthAttribute(index + 1)">
+    <swd-node-attribute #attributes [grid]="grid" [idx]="index" [attribute]="attribute" (escape)="focusNthAttribute(index + 1)">
     </swd-node-attribute>
 </ng-template>

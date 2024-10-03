@@ -10,6 +10,7 @@
     min-width: 120px;
     border: 1px solid #000;
     background-color: #0f0f0fac;
+    box-shadow: 0 0 10px #0007;
     cursor: move;
     user-select: none;
     padding: 6px;

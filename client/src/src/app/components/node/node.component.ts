@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { Entity } from '../../models/data.model';
 import { NodeService } from '../../services/node-service.service';
 import { GridComponent } from '../grid/grid.component';
@@ -49,7 +49,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   focusNthAttribute(n = 0) {
     let nthComponent = this.attributeComponents.get(n);
     if (n >= this.entity.attributes.length) {
-      this.entity.attributes.push({ keyType: 'none', name: "", type: "" });
+      this.entity.attributes.push({ keyType: 'none', name: "", type: "", inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) });
       this.cdr.detectChanges();
       nthComponent = this.attributeComponents.get(n);
     }

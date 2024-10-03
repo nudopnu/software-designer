@@ -2,15 +2,15 @@
     @for (node of this.nodeService.nodes(); track $index) {
     <swd-placeable [grid]="grid" [node]="node">
         <swd-node #nodeRef swdSelectable [grid]="grid" [(entity)]="node.data"
-            [(selected)]="node.metadata().selected"></swd-node>
+            [(selected)]="node.metadata().selected!"></swd-node>
     </swd-placeable>
     }
     <svg viewBox="0 0 1000 1000"
-        style="overflow: visible; position: absolute; top: 3px; left: 3px; pointer-events: none;" width="1000">
+        style="overflow: visible; position: absolute; top: 3px; left: 3px; pointer-events: none; z-index: -1;" width="1000">
         @for (connection of this.nodeService.connections(); track $index) {
         <g swd-node-connection [gridComponent]="grid" [trackMouse]="false"
-            [startPoint]="{x: connection.src.node.metadata().x,y: connection.src.node.metadata().y }"
-            [endPoint]="{x: connection.dst.node.metadata().x,y: connection.dst.node.metadata().y }"></g>
+            [startPoint]="{x: connection.src.node.metadata().x + connection.src.attribute.outAnchor().x, y: connection.src.node.metadata().y + connection.src.attribute.outAnchor().y}"
+            [endPoint]="{x: connection.dst.node.metadata().x + connection.dst.attribute.inAnchor().x ,y: connection.dst.node.metadata().y  + connection.dst.attribute.inAnchor().y }"></g>
         }
     </svg>
 </swd-grid>

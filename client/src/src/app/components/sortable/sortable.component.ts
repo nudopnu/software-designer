@@ -35,6 +35,7 @@ export class SortableComponent<T> implements OnChanges {
   }
 
   onDragEnd(event: DragEvent) {
+    if (this.draggedIdx === this.toExchangeIdx) { return; }
     const newItems = [] as T[];
     this.items.forEach((item, idx) => {
       if (idx === this.draggedIdx) { return; }
@@ -63,7 +64,6 @@ export class SortableComponent<T> implements OnChanges {
       before: this.draggedIdx > index && idx === index,
       after: this.draggedIdx < index && idx === index,
     }));
-    console.log(index, event);
     this.toExchangeIdx = index;
   }
 
