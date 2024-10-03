@@ -46,17 +46,18 @@ export class GridComponent implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  clientToGrid(x: number, y: number) {
+  clientToGrid<T extends { x: number, y: number }>(coords: T) {
+    const { x, y } = coords;
     const worldElement = this.worldElementRef.nativeElement as HTMLElement;
-    const deltaX = x - worldElement.getBoundingClientRect().x;
-    const deltaY = y - worldElement.getBoundingClientRect().y;
+    const deltaX = (x - worldElement.getBoundingClientRect().x) / this.zoom;
+    const deltaY = (y - worldElement.getBoundingClientRect().y) / this.zoom;
     return { x: deltaX, y: deltaY }
   }
 
   protected updateMouseCursor(mouseEvent: MouseEvent) {
-    const { x, y } = this.clientToGrid(mouseEvent.clientX, mouseEvent.clientY);
-    this.cursorMatrix[2] = x / this.zoom;
-    this.cursorMatrix[5] = y / this.zoom;
+    const { x, y } = this.clientToGrid({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+    this.cursorMatrix[2] = x;
+    this.cursorMatrix[5] = y;
     this.cursorTransform = this.toCSS(this.cursorMatrix);
   }
 
@@ -123,7 +124,7 @@ export class GridComponent implements AfterViewInit {
   onMouseUp(event: MouseEvent) {
     if (!this.startMousePoint) { return; }
     this.grab = false;
-    this.grabbing = false;   
+    this.grabbing = false;
   }
 
   @HostListener('wheel', ['$event'])

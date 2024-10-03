@@ -35,13 +35,12 @@ export class EditorComponent {
   onMouseUp(event: MouseEvent) {
     if (this.isPicking) {
       if (this.menuSelection === 1) {
-        const { x, y } = this.gridComponent.clientToGrid(event.clientX, event.clientY);
+        const { x, y } = this.gridComponent.clientToGrid(event);
         const entity = { name: 'NewEntity', attributes: [] };
         const node: Node<Entity> = {
           data: entity,
           metadata: signal({
-            x: x / this.gridComponent.zoom,
-            y: y / this.gridComponent.zoom,
+            x, y,
             selected: true,
             hovered: false,
           }),

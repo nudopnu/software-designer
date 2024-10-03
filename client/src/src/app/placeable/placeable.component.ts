@@ -19,12 +19,12 @@ export class PlaceableComponent {
   };
 
   onDragStart(event: DragEvent) {
-    const { x: mouseX, y: mouseY } = this.grid.clientToGrid(event.clientX, event.clientY);
+    const { x: mouseX, y: mouseY } = this.grid.clientToGrid({ x: event.clientX, y: event.clientY });
     const hostElement = this.containerElementRef.nativeElement as HTMLElement;
     const hostElementRect = hostElement.getBoundingClientRect();
-    const hostElementCoords = this.grid.clientToGrid(hostElementRect.x, hostElementRect.y);
-    const offsetX = (mouseX - hostElementCoords.x) / this.grid.zoom;
-    const offsetY = (mouseY - hostElementCoords.y) / this.grid.zoom;
+    const { x: hostX, y: hostY } = this.grid.clientToGrid(hostElementRect);
+    const offsetX = mouseX - hostX;
+    const offsetY = mouseY - hostY;
     this.startPoint = { offsetX, offsetY };
     event.preventDefault();
     console.log(this.startPoint, hostElement);
@@ -39,12 +39,9 @@ export class PlaceableComponent {
   @HostListener('document:mousemove', ['$event'])
   onDrag(event: MouseEvent) {
     if (!this.startPoint) { return; }
-    const hostElement = this.containerElementRef.nativeElement as HTMLElement;
-    const { x, y } = this.grid.clientToGrid(event.clientX, event.clientY);
-    const relX = ((x) / this.grid.zoom) - this.startPoint.offsetX;
-    const relY = ((y) / this.grid.zoom) - this.startPoint.offsetY;
-    // hostElement.style.left = `${relX}px`;
-    // hostElement.style.top = `${relY}px`;
+    const { x: mouseX, y: mouseY } = this.grid.clientToGrid(event);
+    const relX = mouseX - this.startPoint.offsetX;
+    const relY = mouseY - this.startPoint.offsetY;
     this.node.metadata.update(metadata => ({ ...metadata, x: relX, y: relY }));
   }
 

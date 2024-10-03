@@ -26,10 +26,13 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
   constructor(public nodeService: NodeService) { }
 
   ngAfterViewInit(): void {
-    this.updateAnchors();
+    setTimeout(() => {
+      this.updateAnchors();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if ([...Object.values(changes)].some(change => change.isFirstChange())) { return; }
     this.updateAnchors();
   }
 
@@ -37,17 +40,19 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
     const outAnchorElement = this.outAnchor?.nativeElement as HTMLElement;
     const inAnchorElement = this.inAnchor?.nativeElement as HTMLElement;
     if (inAnchorElement) {
-      const parent = inAnchorElement.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!;
-      const { x: parentX, y: parentY } = parent.getBoundingClientRect();
-      const { x, y } = inAnchorElement.getBoundingClientRect();
+      const parent = this.attributeElementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+      const { x: parentX, y: parentY } = this.grid.clientToGrid(parent.getBoundingClientRect());
+      const { x, y } = this.grid.clientToGrid(inAnchorElement.getBoundingClientRect());
       this.attribute.inAnchor.set({ x: x - parentX, y: y - parentY });
     }
     if (outAnchorElement) {
-      const parent = outAnchorElement.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!.parentElement!;
-      const { x: parentX, y: parentY } = parent.getBoundingClientRect();
-      const { x, y } = outAnchorElement.getBoundingClientRect();
+      const parent = this.attributeElementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+      const { x: parentX, y: parentY } = this.grid.clientToGrid(parent.getBoundingClientRect());
+      const { x, y } = this.grid.clientToGrid(outAnchorElement.getBoundingClientRect());
       this.attribute.outAnchor.set({ x: x - parentX, y: y - parentY });
     }
+    console.log();
+    
   }
 
   @HostListener('keydown', ['$event'])
