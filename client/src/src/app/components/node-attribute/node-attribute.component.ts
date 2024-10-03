@@ -30,7 +30,6 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['idx'] && !changes['attribute']) { return; }
     this.updateAnchors();
   }
 
