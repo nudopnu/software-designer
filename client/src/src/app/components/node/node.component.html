@@ -1,6 +1,6 @@
 <div id="container" [ngClass]="{hovered: hovered}">
     <div id="glow"></div>
-    <div id="title" [ngStyle]="{background: bgColor}">
+    <div id="title" [ngStyle]="{background: bgColor}" style="min-height: 1.8rem;">
         <span style="position: relative;">
             <swd-node-label #title [(value)]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"
                 [minWidth]="0"></swd-node-label>
