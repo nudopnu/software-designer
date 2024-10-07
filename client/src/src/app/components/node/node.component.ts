@@ -46,7 +46,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   focusNthAttribute(n = 0) {
     let nthComponent = this.attributeComponents.get(n);
     if (n >= this.entity.attributes.length) {
-      this.entity.attributes.push(this.nodeService.toAttributeViewModel({ keyType: 'none', name: "", type: 'None' }));
+      this.entity.attributes.push(this.nodeService.toAttributeViewModel({ keyType: 'none', name: "", type: "" }));
       this.cdr.detectChanges();
       nthComponent = this.attributeComponents.get(n);
     }

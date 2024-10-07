@@ -1,8 +1,8 @@
 @for (item of items; track item) {
-<div class="slot">
+<div class="slot" (dragover)="onDragOver($event, $index)">
     <div class="before" *ngIf="isDragging" [ngClass]="{expanded: expanded[$index] && expanded[$index].before}"></div>
     <div draggable="true" class="draggable" (dragstart)="onDragStart($event, $index)" (dragend)="onDragEnd($event)"
-        (dragover)="onDragOver($event, $index)">
+        >
         <ng-container *ngTemplateOutlet="templateRef; context: {item: item, index: $index}"></ng-container>
     </div>
     <div class="after" *ngIf="isDragging" [ngClass]="{expanded: expanded[$index] && expanded[$index].after}"></div>

@@ -69,6 +69,7 @@ export class SortableComponent<T> implements OnChanges {
       after: this.draggedIdx < index && idx === index,
     }));
     this.toExchangeIdx = index;
+    event.preventDefault();
   }
 
 }
