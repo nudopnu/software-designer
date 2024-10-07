@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { Attribute } from '../../models/data.model';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AttributeViewModel } from '../../models/data.model';
 import { NodeService } from '../../services/node-service.service';
 import { GridComponent } from '../grid/grid.component';
 import { NodeLabelComponent } from '../node-label/node-label.component';
@@ -19,7 +19,7 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
 
   @Input() grid!: GridComponent;
   @Input() minWidth: number = 100;
-  @Input() attribute!: Attribute;
+  @Input() attribute!: AttributeViewModel;
   @Input() idx!: number;
   @Output() escape = new EventEmitter();
 
@@ -52,7 +52,7 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
       this.attribute.outAnchor.set({ x: x - parentX, y: y - parentY });
     }
     console.log();
-    
+
   }
 
   @HostListener('keydown', ['$event'])

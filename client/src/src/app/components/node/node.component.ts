@@ -1,5 +1,5 @@
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
-import { Entity } from '../../models/data.model';
+import { Entity, EntityViewMdel } from '../../models/data.model';
 import { NodeService } from '../../services/node-service.service';
 import { GridComponent } from '../grid/grid.component';
 import { NodeAttributeComponent } from '../node-attribute/node-attribute.component';
@@ -16,10 +16,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   @ViewChildren('attributes') attributeComponents!: QueryList<NodeAttributeComponent>;
   @Input() grid!: GridComponent;
   @Input() hue = 210;
-  @Input() entity: Entity = {
-    name: "Entity",
-    attributes: [],
-  };
+  @Input() entity!: EntityViewMdel
   @Input() readonly = false;
   @Output() entityChange = new EventEmitter<Entity>();
 
@@ -49,7 +46,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   focusNthAttribute(n = 0) {
     let nthComponent = this.attributeComponents.get(n);
     if (n >= this.entity.attributes.length) {
-      this.entity.attributes.push({ keyType: 'none', name: "", type: "", inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) });
+      this.entity.attributes.push(this.nodeService.toAttributeViewModel({ keyType: 'none', name: "", type: 'None' }));
       this.cdr.detectChanges();
       nthComponent = this.attributeComponents.get(n);
     }

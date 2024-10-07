@@ -1,8 +1,7 @@
 <swd-grid #grid>
     @for (node of this.nodeService.nodes(); track $index) {
-    <swd-placeable [grid]="grid" [node]="node">
-        <swd-node #nodeRef swdSelectable [grid]="grid" [(entity)]="node.data"
-            [(selected)]="node.metadata().selected!"></swd-node>
+    <swd-placeable [grid]="grid" [position]="node.position">
+        <swd-node #nodeRef swdSelectable [grid]="grid" [entity]="node" [(selected)]="node.selected"></swd-node>
     </swd-placeable>
     }
     <svg viewBox="0 0 1000 1000"
@@ -10,8 +9,8 @@
         width="1000">
         @for (connection of this.nodeService.connections(); track $index) {
         <g swd-node-connection [gridComponent]="grid" [trackMouse]="false"
-            [startPoint]="{x: connection.src.node.metadata().x + connection.src.attribute.outAnchor().x, y: connection.src.node.metadata().y + connection.src.attribute.outAnchor().y}"
-            [endPoint]="{x: connection.dst.node.metadata().x + connection.dst.attribute.inAnchor().x ,y: connection.dst.node.metadata().y  + connection.dst.attribute.inAnchor().y }">
+            [startPoint]="{x: connection.src.node.position().x + connection.src.attribute.outAnchor().x, y: connection.src.node.position().y + connection.src.attribute.outAnchor().y}"
+            [endPoint]="{x: connection.dst.node.position().x + connection.dst.attribute.inAnchor().x ,y: connection.dst.node.position().y  + connection.dst.attribute.inAnchor().y }">
         </g>
         }
     </svg>
@@ -20,8 +19,8 @@
 <div style="position: absolute;" [ngStyle]="{transform: pickerTransform}">
     @if (isPicking) {
     <swd-picker [(selected)]="menuSelection">
-        <swd-node [readonly]="true" [entity]="{name: 'ViewModel', attributes: []}" [hue]="30"></swd-node>
-        <swd-node [readonly]="true" [entity]="{name: 'Table', attributes: []}" [hue]="210"></swd-node>
+        <swd-node [readonly]="true" [entity]="emptyEntity" [hue]="30"></swd-node>
+        <swd-node [readonly]="true" [entity]="emptyViewModel" [hue]="210"></swd-node>
     </swd-picker>
     }
 </div>

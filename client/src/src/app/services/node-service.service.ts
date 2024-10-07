@@ -1,36 +1,20 @@
-import { computed, effect, Injectable, signal, Signal, WritableSignal } from '@angular/core';
-import { Attribute, Entity, Node } from '../models/data.model';
+import { computed, effect, Injectable, signal, WritableSignal } from '@angular/core';
+import { Attribute, AttributeViewModel, Entity, EntityViewMdel, Position } from '../models/data.model';
 
-const MockData: Node<Entity>[] = [
+const MockEntities: Entity[] = [
   {
-    data: {
-      name: 'User', attributes: [
-        { keyType: 'primary', name: 'id', type: 'INT', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-        { keyType: 'none', name: 'firstname', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-        { keyType: 'none', name: 'lastname', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-      ]
-    },
-    metadata: signal({
-      x: 0,
-      y: 0,
-      selected: true,
-      hovered: false,
-    }),
+    name: 'User', attributes: [
+      { keyType: 'primary', name: 'id', type: 'INT' },
+      { keyType: 'none', name: 'firstname', type: 'VARCHAR(100)' },
+      { keyType: 'none', name: 'lastname', type: 'VARCHAR(100)' },
+    ]
   },
   {
-    data: {
-      name: 'Account', attributes: [
-        { keyType: 'primary', name: 'id', type: 'INT', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-        { keyType: 'none', name: 'email', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-        { keyType: 'none', name: 'password', type: 'VARCHAR(100)', inAnchor: signal({ x: 0, y: 0 }), outAnchor: signal({ x: 0, y: 0 }) },
-      ]
-    },
-    metadata: signal({
-      x: 300,
-      y: 0,
-      selected: false,
-      hovered: false,
-    })
+    name: 'Account', attributes: [
+      { keyType: 'primary', name: 'id', type: 'INT' },
+      { keyType: 'none', name: 'email', type: 'VARCHAR(100)' },
+      { keyType: 'none', name: 'password', type: 'VARCHAR(100)' },
+    ]
   },
 ];
 
@@ -39,20 +23,49 @@ const MockData: Node<Entity>[] = [
 })
 export class NodeService {
 
-  nodes: WritableSignal<Node<Entity>[]> = signal(MockData);
+  nodes: WritableSignal<EntityViewMdel[]>;
   connections = computed(() => this.connectionsFromNodes());
   isConnecting = false;
   connectionStart?: {
-    entity: Entity,
-    attribute: Attribute,
-    anchor: HTMLElement,
+    entity: EntityViewMdel,
+    attribute: AttributeViewModel,
+    anchor: WritableSignal<Position>,
   };
   destination?: Entity;
 
-  private attributeToNode = computed(() => {
-    const result = new Map<Attribute, Node<Entity>>();
+  constructor() {
+    this.nodes = signal(MockEntities.map((entity, idx) => this.toEntityViewModel(entity, { x: idx * 300, y: 0 })));
+  }
+
+  addEntity(entity: Entity, position: Position = { x: 0, y: 0 }) {
+    this.nodes.update(nodes => ([...nodes, this.toEntityViewModel(entity, position)]));
+  }
+
+  toEntityViewModel(entity: Entity, position: Position = { x: 0, y: 0 }): EntityViewMdel {
+    return {
+      ...entity,
+      attributes: entity.attributes.map(this.toAttributeViewModel),
+      position: signal(position),
+      hovered: signal(false),
+      selected: signal(false),
+    };
+  }
+
+  toAttributeViewModel(attribute: Attribute): AttributeViewModel {
+    return {
+      ...attribute,
+      connectedTo: attribute.connectedTo ? this.toAttributeViewModel(attribute.connectedTo) : undefined,
+      inAnchor: signal({ x: 0, y: 0 }),
+      outAnchor: signal({ x: 0, y: 0 }),
+      nameWidth: signal(100),
+      typeWidth: signal(100),
+    }
+  }
+
+  private attributeToEntity = computed(() => {
+    const result = new Map<Attribute, EntityViewMdel>();
     this.nodes().forEach((node) => {
-      node.data.attributes.forEach(attribute => {
+      node.attributes.forEach(attribute => {
         result.set(attribute, node);
       });
     });
@@ -60,15 +73,16 @@ export class NodeService {
   });
 
   private connectionsFromNodes() {
-    return this.nodes().flatMap(({ data: entity }) =>
+    return this.nodes().flatMap((entity) =>
       entity.attributes
-        .filter(attribute => attribute.keyType === 'foreign').map(attribute => ({
+        .filter(attribute => attribute.keyType === 'foreign')
+        .map(attribute => ({
           src: {
-            node: this.attributeToNode().get(attribute.connectedTo!)!,
+            node: this.attributeToEntity().get(attribute.connectedTo!)!,
             attribute: attribute.connectedTo!,
           },
           dst: {
-            node: this.attributeToNode().get(attribute)!,
+            node: this.attributeToEntity().get(attribute)!,
             attribute,
           },
         }))
@@ -82,8 +96,6 @@ export class NodeService {
 
   attributeAnchors = new Map<Attribute, WritableSignal<{ in: HTMLElement, out: HTMLElement }>>();
 
-  constructor() { }
-
   registerAttribute(attribute: Attribute, inAnchorElement: HTMLElement, outAnchorElement: HTMLElement) {
     console.log("register", attribute);
 
@@ -95,12 +107,12 @@ export class NodeService {
     }
   }
 
-  startConnecting(source: Attribute, anchorElement: HTMLElement) {
-    const entity = this.attributeToNode().get(source)!.data;
+  startConnecting(source: AttributeViewModel, anchorElement: HTMLElement) {
+    const entity = this.attributeToEntity().get(source)!;
     this.connectionStart = {
       entity,
       attribute: source,
-      anchor: anchorElement,
+      anchor: source.outAnchor,
     };
     this.isConnecting = true;
   }
@@ -114,23 +126,23 @@ export class NodeService {
     console.log("Abort");
     if (this.destination) {
       this.nodes.update(nodes => ([
-        ...nodes.map((node) => {
-          const newAttribute: Attribute = {
+        ...nodes.map((entity) => {
+          const newAttribute: AttributeViewModel = {
+            type: 'INT',
             keyType: 'foreign',
             name: this.connectionStart?.entity.name.toLowerCase() + '_id',
             connectedTo: this.connectionStart?.attribute,
-            type: 'INT',
             inAnchor: signal({ x: 0, y: 0 }),
             outAnchor: signal({ x: 0, y: 0 }),
+            nameWidth: signal(100),
+            typeWidth: signal(100),
           };
-          return node.data !== this.destination ? node : {
-            ...node, data: {
-              ...node.data,
-              attributes: [
-                ...node.data.attributes,
-                newAttribute,
-              ]
-            }
+          return entity !== this.destination ? entity : {
+            ...entity,
+            attributes: [
+              ...entity.attributes,
+              newAttribute,
+            ]
           };
         }),
       ]))

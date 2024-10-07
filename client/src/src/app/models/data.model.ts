@@ -1,56 +1,62 @@
 import { WritableSignal } from "@angular/core";
 
-export type DesignDocument = {
+export interface DesignDocument {
     description: string;
     userStories: UserStory[];
     dataModel: DataModel;
 };
 
-export type UserStory = {
+export interface UserStory {
     summary: string;
     description: string;
 };
 
-export type User = {
+export interface User {
     name: string;
     description: string;
 };
 
-export type Occurence = {
+export interface Occurence {
     ref: Entity | Attribute;
     startPos: number;
     endPos: number;
 };
 
-export type DataModel = {
+export interface DataModel {
     description: string;
     entities: Entity[];
 };
 
-export type Entity = {
+export interface Entity {
     name: string;
     attributes: Attribute[];
 };
 
 export type KeyType = 'none' | 'primary' | 'foreign';
 
-export type Attribute = {
+export interface Attribute {
     keyType: KeyType;
     name: string;
     type: string;
     connectedTo?: Attribute;
-    inAnchor: NodeMetadata;
-    outAnchor: NodeMetadata;
 };
 
-export type NodeMetadata = WritableSignal<{
+export type Position = {
     x: number;
     y: number;
-    selected?: boolean;
-    hovered?: boolean;
-}>;
+}
 
-export type Node<T> = {
-    data: T;
-    metadata: NodeMetadata;
+export interface EntityViewMdel extends Entity {
+    attributes: AttributeViewModel[];
+    position: WritableSignal<Position>;
+    selected: WritableSignal<boolean>;
+    hovered: WritableSignal<boolean>;
 };
+
+export interface AttributeViewModel extends Attribute {
+    connectedTo?: AttributeViewModel;
+    inAnchor: WritableSignal<Position>;
+    outAnchor: WritableSignal<Position>;
+    nameWidth: WritableSignal<number>;
+    typeWidth: WritableSignal<number>;
+}

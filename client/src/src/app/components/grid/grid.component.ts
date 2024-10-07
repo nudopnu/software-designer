@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { mat3, vec3 } from "gl-matrix";
+import { NodeService } from '../../services/node-service.service';
 
 @Component({
   selector: 'swd-grid',
@@ -39,6 +40,7 @@ export class GridComponent implements AfterViewInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    nodeService: NodeService,
   ) { }
 
   ngAfterViewInit(): void {

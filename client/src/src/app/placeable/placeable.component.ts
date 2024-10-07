@@ -1,6 +1,6 @@
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ViewChild, WritableSignal } from '@angular/core';
 import { GridComponent } from '../components/grid/grid.component';
-import { Node } from '../models/data.model';
+import { Position } from '../models/data.model';
 
 @Component({
   selector: 'swd-placeable',
@@ -10,7 +10,7 @@ import { Node } from '../models/data.model';
 export class PlaceableComponent {
 
   @Input() grid!: GridComponent;
-  @Input() node!: Node<any>;
+  @Input() position!: WritableSignal<Position>;
   @ViewChild('container') containerElementRef!: ElementRef;
 
   startPoint?: {
@@ -42,7 +42,7 @@ export class PlaceableComponent {
     const { x: mouseX, y: mouseY } = this.grid.clientToGrid(event);
     const relX = mouseX - this.startPoint.offsetX;
     const relY = mouseY - this.startPoint.offsetY;
-    this.node.metadata.update(metadata => ({ ...metadata, x: relX, y: relY }));
+    this.position.set({ x: relX, y: relY });
   }
 
 }
