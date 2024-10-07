@@ -23,7 +23,7 @@ const MockEntities: Entity[] = [
 })
 export class NodeService {
 
-  nodes: WritableSignal<EntityViewMdel[]>;
+  entities: WritableSignal<EntityViewMdel[]>;
   connections = computed(() => this.connectionsFromNodes());
   isConnecting = false;
   connectionStart?: {
@@ -34,11 +34,23 @@ export class NodeService {
   destination?: Entity;
 
   constructor() {
-    this.nodes = signal(MockEntities.map((entity, idx) => this.toEntityViewModel(entity, { x: idx * 300, y: 0 })));
+    this.entities = signal(MockEntities.map((entity, idx) => this.toEntityViewModel(entity, { x: idx * 300, y: 0 })));
   }
 
   addEntity(entity: Entity, position: Position = { x: 0, y: 0 }) {
-    this.nodes.update(nodes => ([...nodes, this.toEntityViewModel(entity, position)]));
+    this.entities.update(entities => ([...entities, this.toEntityViewModel(entity, position)]));
+  }
+
+  deleteAttribute(attribute: AttributeViewModel) {
+    const entity = this.attributeToEntity().get(attribute)!;
+    console.log(attribute, entity);
+    this.entities.update(entities => [
+      ...entities.filter(e => e !== entity),
+      {
+        ...entity,
+        attributes: entity.attributes.filter(a => a !== attribute),
+      }
+    ]);
   }
 
   toEntityViewModel(entity: Entity, position: Position = { x: 0, y: 0 }): EntityViewMdel {
@@ -64,16 +76,16 @@ export class NodeService {
 
   private attributeToEntity = computed(() => {
     const result = new Map<Attribute, EntityViewMdel>();
-    this.nodes().forEach((node) => {
-      node.attributes.forEach(attribute => {
-        result.set(attribute, node);
+    this.entities().forEach((entity) => {
+      entity.attributes.forEach(attribute => {
+        result.set(attribute, entity);
       });
     });
     return result;
   });
 
   private connectionsFromNodes() {
-    return this.nodes().flatMap((entity) =>
+    return this.entities().flatMap((entity) =>
       entity.attributes
         .filter(attribute => attribute.keyType === 'foreign')
         .map(attribute => ({
@@ -90,7 +102,7 @@ export class NodeService {
   }
 
   logger = effect(() => {
-    console.log(this.nodes());
+    console.log(this.entities());
   });
 
 
@@ -125,8 +137,8 @@ export class NodeService {
     if (!this.isConnecting) { return; }
     console.log("Abort");
     if (this.destination) {
-      this.nodes.update(nodes => ([
-        ...nodes.map((entity) => {
+      this.entities.update(entities => ([
+        ...entities.map((entity) => {
           const newAttribute: AttributeViewModel = {
             type: 'INT',
             keyType: 'foreign',

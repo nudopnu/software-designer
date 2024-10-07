@@ -5,17 +5,29 @@
 
 #attribute:hover {
     background-color: #fff1;
+
+    #delete {
+        color: #fffe;
+    }
 }
 
-#icon {
-    color: rgb(255, 196, 0);
-}
-
-.connector-container,#icon {
+.connector-container,
+#icon,
+#delete {
     display: flex;
     align-items: center;
     margin: 0 6px;
     width: 12px;
+}
+
+#delete {
+    cursor: pointer;
+    color: #0000;
+    margin-right: 0px;
+}
+
+#icon {
+    color: rgb(255, 196, 0);
 }
 
 .connector {
