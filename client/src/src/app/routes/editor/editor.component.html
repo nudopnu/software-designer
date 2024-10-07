@@ -1,5 +1,5 @@
 <swd-grid #grid>
-    @for (node of this.nodeService.entities(); track $index) {
+    @for (node of this.nodeService.entities(); track node) {
     <swd-placeable [grid]="grid" [position]="node.position">
         <swd-node #nodeRef swdSelectable [grid]="grid" [entity]="node" [(selected)]="node.selected"></swd-node>
     </swd-placeable>

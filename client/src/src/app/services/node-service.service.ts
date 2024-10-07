@@ -37,8 +37,16 @@ export class NodeService {
     this.entities = signal(MockEntities.map((entity, idx) => this.toEntityViewModel(entity, { x: idx * 300, y: 0 })));
   }
 
+  logger = effect(() => {
+    console.log(this.entities());
+  });
+
   addEntity(entity: Entity, position: Position = { x: 0, y: 0 }) {
     this.entities.update(entities => ([...entities, this.toEntityViewModel(entity, position)]));
+  }
+
+  deleteSelectedEntities() {
+    this.entities.update(entities => [...entities.filter(entity => !entity.selected())])
   }
 
   deleteAttribute(attribute: AttributeViewModel) {
@@ -100,11 +108,6 @@ export class NodeService {
         }))
     );
   }
-
-  logger = effect(() => {
-    console.log(this.entities());
-  });
-
 
   attributeAnchors = new Map<Attribute, WritableSignal<{ in: HTMLElement, out: HTMLElement }>>();
 

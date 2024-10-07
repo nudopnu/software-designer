@@ -51,7 +51,7 @@ export class EditorComponent {
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Delete') {
-      this.nodeService.entities.update(nodes => [...nodes.filter(node => !node.selected())]);
+      this.nodeService.deleteSelectedEntities();
     }
   }
 
