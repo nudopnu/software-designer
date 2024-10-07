@@ -13,10 +13,12 @@ export class SortableComponent<T> implements OnChanges {
   expanded: { before: boolean, after: boolean }[] = [];
   draggedIdx = -1;
   toExchangeIdx = -1;
+  isDragging = false;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.isDragging = false;
     this.expanded = this.items.map(item => ({
       before: false,
       after: false,
@@ -25,6 +27,7 @@ export class SortableComponent<T> implements OnChanges {
 
   onDragStart(event: DragEvent, index: number) {
     console.log(event, index);
+    this.isDragging = true;
     this.draggedIdx = index;
     this.toExchangeIdx = index;
     const selection = window.getSelection();
@@ -51,12 +54,13 @@ export class SortableComponent<T> implements OnChanges {
         newItems.push(item);
       }
     });
-    this.items = newItems;
     this.expanded = this.items.map(item => ({
       before: false,
       after: false,
     }));
+    this.isDragging = false;
     this.cdr.detectChanges();
+    this.items = newItems;
   }
 
   onDragOver(event: DragEvent, index: number) {
