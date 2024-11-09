@@ -31,11 +31,7 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
   cdr = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.cdr.detectChanges();
-      this.updateAnchors();
-      this.cdr.detectChanges();
-    });
+    this.updateAnchors();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +53,7 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
       const { x: parentX, y: parentY } = this.grid.clientToGrid(parent.getBoundingClientRect());
       const { x, y } = this.grid.clientToGrid(outAnchorElement.getBoundingClientRect());
       this.attribute.outAnchor.set({ x: x - parentX, y: y - parentY });
+      console.log(this.attribute.outAnchor);
     }
   }
 
@@ -64,6 +61,8 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
   onKeyDown(event: KeyboardEvent) {
     if (!event.altKey || event.key !== 'Enter') { return; }
     this.attribute.keyType = this.attribute.keyType !== 'primary' ? 'primary' : 'none';
+    this.cdr.detectChanges();
+    this.updateAnchors();
   }
 
   onDragStart(event: DragEvent) {
