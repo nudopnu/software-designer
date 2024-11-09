@@ -1,5 +1,8 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
-import { Entity, EntityViewMdel } from '../../models/data.model';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, computed, EventEmitter, HostListener, inject, input, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AttributeStore } from '../../models/attribute.store';
+import { Table } from '../../models/data.model';
+import { TableEntity, toAttributeEntity } from '../../models/entities.model';
+import { TableStore } from '../../models/entity.store';
 import { NodeService } from '../../services/node-service.service';
 import { GridComponent } from '../grid/grid.component';
 import { NodeAttributeComponent } from '../node-attribute/node-attribute.component';
@@ -12,22 +15,23 @@ import { NodeLabelComponent } from '../node-label/node-label.component';
 })
 export class NodeComponent implements AfterContentInit, AfterViewInit {
 
+  entity = input.required<TableEntity>();
+  attributes = computed(() => this.attributeStore.entities().filter(attr => attr.parent.id === this.entity().id))
+  entityStore = inject(TableStore);
+  attributeStore = inject(AttributeStore);
+  nodeService = inject(NodeService);
+  cdr = inject(ChangeDetectorRef);
+
   @ViewChild('title') titleComponent!: NodeLabelComponent;
   @ViewChildren('attributes') attributeComponents!: QueryList<NodeAttributeComponent>;
   @Input() grid!: GridComponent;
   @Input() hue = 210;
-  @Input() entity!: EntityViewMdel
   @Input() readonly = false;
-  @Output() entityChange = new EventEmitter<Entity>();
+  @Output() entityChange = new EventEmitter<Table>();
 
   bgColor = '';
   isEditing = false;
   hovered = false;
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private nodeService: NodeService,
-  ) { }
 
   ngAfterViewInit(): void {
     if (this.readonly) { return; }
@@ -43,11 +47,21 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
     this.isEditing = true;
   }
 
+  onEscapeTitle(newTitle: string) {
+    this.entityStore.setEntityName(this.entity(), newTitle);
+    this.focusNthAttribute();
+  }
+
   focusNthAttribute(n = 0) {
     let nthComponent = this.attributeComponents.get(n);
-    if (n >= this.entity.attributes.length) {
-      this.entity.attributes.push(this.nodeService.toAttributeViewModel({ keyType: 'none', name: "", type: "" }));
+    if (n >= this.entity().attributes.length) {
+      this.attributeStore.addAttribute(toAttributeEntity(this.entity(), {
+        keyType: 'none',
+        name: '',
+        type: '',
+      }));
       this.cdr.detectChanges();
+      console.log(this.attributeComponents, n);
       nthComponent = this.attributeComponents.get(n);
     }
     nthComponent!.focusNameElement();
@@ -61,8 +75,7 @@ export class NodeComponent implements AfterContentInit, AfterViewInit {
   @HostListener('mouseover', ['$event'])
   onMouseOver(event: MouseEvent) {
     if (!this.nodeService.isConnecting || !this.nodeService.connectionStart) { return; }
-    console.log(this.nodeService.connectionStart.entity, this.entity);
-    this.nodeService.setDestination(this.entity);
+    this.nodeService.setDestination(this.entity());
     this.hovered = true;
     event.stopPropagation();
   }

@@ -57,7 +57,7 @@ export class NodeLabelComponent implements OnInit {
     }
     event.preventDefault();
     event.stopImmediatePropagation();
-    this.escape.emit(event.key);
+    this.escape.emit(this.value);
   }
 
   onInput(event: Event) {

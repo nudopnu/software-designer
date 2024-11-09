@@ -18,7 +18,9 @@ export class NodeConnectionComponent implements OnChanges {
   constructor(private hostRef: ElementRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.updatePath();
+    setTimeout(() => {
+      this.updatePath(); 
+    });
   }
 
   @HostListener('document:mousemove', ['$event'])

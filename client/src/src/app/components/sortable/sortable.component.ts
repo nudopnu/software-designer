@@ -5,7 +5,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, Template
   templateUrl: './sortable.component.html',
   styleUrl: './sortable.component.css'
 })
-export class SortableComponent<T> implements OnChanges {
+export class SortableComponent<T extends { id: symbol | string | number }> implements OnChanges {
 
   @Input() templateRef!: TemplateRef<any>;
   @Input() items: T[] = [];

@@ -1,16 +1,16 @@
 <swd-grid #grid>
-    @for (node of this.nodeService.entities(); track node) {
+    @for (node of this.entityStore.entities(); track node.id) {
     <swd-placeable [grid]="grid" [position]="node.position">
-        <swd-node #nodeRef swdSelectable [grid]="grid" [entity]="node" [(selected)]="node.selected"></swd-node>
+        <swd-node #nodeRef swdSelectable [grid]="grid" [entity]="node" [selected]="node.selected" (selectedChange)="entityStore.setEntitySelected(node, $event)"></swd-node>
     </swd-placeable>
     }
     <svg viewBox="0 0 1000 1000"
         style="overflow: visible; position: absolute; top: 3px; left: 3px; pointer-events: none; z-index: -1;"
         width="1000">
-        @for (connection of this.nodeService.connections(); track $index) {
+        @for (connection of this.attributeStore.connections(); track $index) {
         <g swd-node-connection [gridComponent]="grid" [trackMouse]="false"
-            [startPoint]="{x: connection.src.node.position().x + connection.src.attribute.outAnchor().x, y: connection.src.node.position().y + connection.src.attribute.outAnchor().y}"
-            [endPoint]="{x: connection.dst.node.position().x + connection.dst.attribute.inAnchor().x ,y: connection.dst.node.position().y  + connection.dst.attribute.inAnchor().y }">
+            [startPoint]="{x: connection.start.parent.position().x + connection.start.outAnchor().x, y: connection.start.parent.position().y + connection.start.outAnchor().y}"
+            [endPoint]="{x: connection.end.parent.position().x + connection.end.inAnchor().x, y: connection.end.parent.position().y  + connection.end.inAnchor().y }">
         </g>
         }
     </svg>

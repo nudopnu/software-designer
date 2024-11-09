@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { AttributeViewModel } from '../../models/data.model';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NodeService } from '../../services/node-service.service';
 import { GridComponent } from '../grid/grid.component';
 import { NodeLabelComponent } from '../node-label/node-label.component';
+import { TableStore } from '../../models/entity.store';
+import { AttributeEntity } from '../../models/entities.model';
+import { AttributeStore } from '../../models/attribute.store';
 
 @Component({
   selector: 'swd-node-attribute',
@@ -19,15 +21,20 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
 
   @Input() grid!: GridComponent;
   @Input() minWidth: number = 100;
-  @Input() attribute!: AttributeViewModel;
+  @Input() attribute!: AttributeEntity;
   @Input() idx!: number;
   @Output() escape = new EventEmitter();
 
-  constructor(public nodeService: NodeService) { }
+  nodeService = inject(NodeService);
+  entityStore = inject(TableStore);
+  attributeStore = inject(AttributeStore);
+  cdr = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
     setTimeout(() => {
+      this.cdr.detectChanges();
       this.updateAnchors();
+      this.cdr.detectChanges();
     });
   }
 
@@ -51,8 +58,6 @@ export class NodeAttributeComponent implements AfterViewInit, OnChanges {
       const { x, y } = this.grid.clientToGrid(outAnchorElement.getBoundingClientRect());
       this.attribute.outAnchor.set({ x: x - parentX, y: y - parentY });
     }
-    console.log();
-
   }
 
   @HostListener('keydown', ['$event'])

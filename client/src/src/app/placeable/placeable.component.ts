@@ -27,7 +27,6 @@ export class PlaceableComponent {
     const offsetY = mouseY - hostY;
     this.startPoint = { offsetX, offsetY };
     event.preventDefault();
-    console.log(this.startPoint, hostElement);
   }
 
   @HostListener('document:mouseup', ['$event'])

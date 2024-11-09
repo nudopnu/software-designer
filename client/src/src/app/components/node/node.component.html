@@ -2,12 +2,12 @@
     <div id="glow"></div>
     <div id="title" [ngStyle]="{background: bgColor}" style="min-height: 1.8rem;">
         <span style="position: relative;">
-            <swd-node-label #title [(value)]="entity.name" [casing]="'CAP'" (escape)="focusNthAttribute()"
+            <swd-node-label #title [(value)]="entity().name" [casing]="'CAP'" (escape)="onEscapeTitle($event)"
                 [minWidth]="0"></swd-node-label>
         </span>
     </div>
     <div id="attributes" (mousedown)="onMouseDownOnAttribute($event)">
-        <swd-sortable [items]="entity.attributes" [templateRef]="attributeTemplate"></swd-sortable>
+        <swd-sortable [items]="attributes()" [templateRef]="attributeTemplate"></swd-sortable>
     </div>
 </div>
 

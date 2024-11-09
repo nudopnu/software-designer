@@ -1,112 +1,31 @@
-import { computed, effect, Injectable, signal, WritableSignal } from '@angular/core';
-import { Attribute, AttributeViewModel, Entity, EntityViewMdel, Position } from '../models/data.model';
-
-const MockEntities: Entity[] = [
-  {
-    name: 'User', attributes: [
-      { keyType: 'primary', name: 'id', type: 'INT' },
-      { keyType: 'none', name: 'firstname', type: 'VARCHAR(100)' },
-      { keyType: 'none', name: 'lastname', type: 'VARCHAR(100)' },
-    ]
-  },
-  {
-    name: 'Account', attributes: [
-      { keyType: 'primary', name: 'id', type: 'INT' },
-      { keyType: 'none', name: 'email', type: 'VARCHAR(100)' },
-      { keyType: 'none', name: 'password', type: 'VARCHAR(100)' },
-    ]
-  },
-];
+import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { AttributeStore } from '../models/attribute.store';
+import { Attribute, Position, Table } from '../models/data.model';
+import { TableStore } from '../models/entity.store';
+import { MockTables } from '../models/tables.mock';
+import { AttributeEntity, TableEntity, toAttributeEntity } from '../models/entities.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NodeService {
 
-  entities: WritableSignal<EntityViewMdel[]>;
-  connections = computed(() => this.connectionsFromNodes());
+  tableStore = inject(TableStore);
+  attributeStore = inject(AttributeStore);
+  connections = computed(() => {
+
+  });
   isConnecting = false;
   connectionStart?: {
-    entity: EntityViewMdel,
-    attribute: AttributeViewModel,
+    attribute: AttributeEntity,
     anchor: WritableSignal<Position>,
   };
-  destination?: Entity;
+  destination?: TableEntity;
 
   constructor() {
-    this.entities = signal(MockEntities.map((entity, idx) => this.toEntityViewModel(entity, { x: idx * 300, y: 0 })));
-  }
-
-  logger = effect(() => {
-    console.log(this.entities());
-  });
-
-  addEntity(entity: Entity, position: Position = { x: 0, y: 0 }) {
-    this.entities.update(entities => ([...entities, this.toEntityViewModel(entity, position)]));
-  }
-
-  deleteSelectedEntities() {
-    this.entities.update(entities => [...entities.filter(entity => !entity.selected())])
-  }
-
-  deleteAttribute(attribute: AttributeViewModel) {
-    const entity = this.attributeToEntity().get(attribute)!;
-    console.log(attribute, entity);
-    this.entities.update(entities => [
-      ...entities.filter(e => e !== entity),
-      {
-        ...entity,
-        attributes: entity.attributes.filter(a => a !== attribute),
-      }
-    ]);
-  }
-
-  toEntityViewModel(entity: Entity, position: Position = { x: 0, y: 0 }): EntityViewMdel {
-    return {
-      ...entity,
-      attributes: entity.attributes.map(this.toAttributeViewModel),
-      position: signal(position),
-      hovered: signal(false),
-      selected: signal(false),
-    };
-  }
-
-  toAttributeViewModel(attribute: Attribute): AttributeViewModel {
-    return {
-      ...attribute,
-      connectedTo: attribute.connectedTo ? this.toAttributeViewModel(attribute.connectedTo) : undefined,
-      inAnchor: signal({ x: 0, y: 0 }),
-      outAnchor: signal({ x: 0, y: 0 }),
-      nameWidth: signal(100),
-      typeWidth: signal(100),
-    }
-  }
-
-  private attributeToEntity = computed(() => {
-    const result = new Map<Attribute, EntityViewMdel>();
-    this.entities().forEach((entity) => {
-      entity.attributes.forEach(attribute => {
-        result.set(attribute, entity);
-      });
+    MockTables.forEach((entity, idx) => {
+      this.tableStore.addEntity(entity, { x: idx * 300, y: 0 });
     });
-    return result;
-  });
-
-  private connectionsFromNodes() {
-    return this.entities().flatMap((entity) =>
-      entity.attributes
-        .filter(attribute => attribute.keyType === 'foreign')
-        .map(attribute => ({
-          src: {
-            node: this.attributeToEntity().get(attribute.connectedTo!)!,
-            attribute: attribute.connectedTo!,
-          },
-          dst: {
-            node: this.attributeToEntity().get(attribute)!,
-            attribute,
-          },
-        }))
-    );
   }
 
   attributeAnchors = new Map<Attribute, WritableSignal<{ in: HTMLElement, out: HTMLElement }>>();
@@ -122,47 +41,26 @@ export class NodeService {
     }
   }
 
-  startConnecting(source: AttributeViewModel, anchorElement: HTMLElement) {
-    const entity = this.attributeToEntity().get(source)!;
+  startConnecting(source: AttributeEntity, anchorElement: HTMLElement) {
     this.connectionStart = {
-      entity,
       attribute: source,
       anchor: source.outAnchor,
     };
     this.isConnecting = true;
   }
 
-  setDestination(entity?: Entity) {
+  setDestination(entity?: TableEntity) {
     this.destination = entity;
   }
 
   abortConnecting() {
-    if (!this.isConnecting) { return; }
-    console.log("Abort");
-    if (this.destination) {
-      this.entities.update(entities => ([
-        ...entities.map((entity) => {
-          const newAttribute: AttributeViewModel = {
-            type: 'INT',
-            keyType: 'foreign',
-            name: this.connectionStart?.entity.name.toLowerCase() + '_id',
-            connectedTo: this.connectionStart?.attribute,
-            inAnchor: signal({ x: 0, y: 0 }),
-            outAnchor: signal({ x: 0, y: 0 }),
-            nameWidth: signal(100),
-            typeWidth: signal(100),
-          };
-          return entity !== this.destination ? entity : {
-            ...entity,
-            attributes: [
-              ...entity.attributes,
-              newAttribute,
-            ]
-          };
-        }),
-      ]))
-      this.destination.attributes.push();
-    }
+    if (!this.isConnecting || !this.connectionStart || !this.destination) { return; }
+    const parent = this.connectionStart.attribute.parent;
+    this.attributeStore.addAttribute(toAttributeEntity(this.destination, {
+      name: parent.name.toLowerCase() + '_id',
+      keyType: 'foreign',
+      type: 'INT',
+    }, this.connectionStart.attribute));
     this.connectionStart = undefined;
     this.isConnecting = false;
   }
